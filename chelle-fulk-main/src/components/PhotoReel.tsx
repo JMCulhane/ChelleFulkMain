@@ -11,19 +11,19 @@ const reel: string[] = assets(
 const infiniteReel: string[] = [...reel, ...reel];
 
 const PhotoReel: React.FC = (): JSX.Element => {
-  const containerRef: React.RefObject<HTMLDivElement | null> = useRef<HTMLDivElement>(null);
+  const containerRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
   const currentIndex: React.MutableRefObject<number> = useRef<number>(0);
   const intervalRef: React.MutableRefObject<number | null> = useRef<number | null>(null);
   const resizeTimeoutRef: React.MutableRefObject<number | null> = useRef<number | null>(null);
   const slideInterval: number = 3000;
 
-  useEffect((): () => void => {
+  const startCarousel = (): void => {
     const container: HTMLDivElement | null = containerRef.current;
-    if (!container) return () => {};
+    if (!container) return;
 
     const totalSlides: number = reel.length;
 
-    const intervalId: number = window.setInterval(() => {
+    intervalRef.current = window.setInterval(() => {
       if (!container) return;
 
       currentIndex.current += 1;
@@ -42,8 +42,42 @@ const PhotoReel: React.FC = (): JSX.Element => {
         }, 800);
       }
     }, slideInterval);
+  };
 
-    return (): void => window.clearInterval(intervalId);
+  const stopCarousel = (): void => {
+    if (intervalRef.current !== null) {
+      window.clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  };
+
+  useEffect((): () => void => {
+    const container: HTMLDivElement | null = containerRef.current;
+    if (!container) return () => {};
+
+    startCarousel();
+
+    const handleResize = (): void => {
+      stopCarousel();
+
+      if (resizeTimeoutRef.current !== null) {
+        window.clearTimeout(resizeTimeoutRef.current);
+      }
+
+      resizeTimeoutRef.current = window.setTimeout(() => {
+        startCarousel();
+      }, 500); // resume after 500ms of no resize activity
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return (): void => {
+      stopCarousel();
+      window.removeEventListener('resize', handleResize);
+      if (resizeTimeoutRef.current !== null) {
+        window.clearTimeout(resizeTimeoutRef.current);
+      }
+    };
   }, []);
 
   return (
