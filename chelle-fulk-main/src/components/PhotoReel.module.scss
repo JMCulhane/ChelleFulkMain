@@ -1,0 +1,26 @@
+.reelWrapper {
+  width: 100vw;
+  height: 80vh;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scroll-behavior: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.reelWrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.reelContainer {
+  display: flex;
+  height: 100%;
+  width: max-content;
+}
+
+.reelPhoto {
+  width: 100vw;
+  height: 80vh;
+  object-fit: fill;
+  flex-shrink: 0;
+}
