@@ -11,7 +11,7 @@ const reel: string[] = assets(
 const infiniteReel: string[] = [...reel, ...reel];
 
 const PhotoReel: React.FC = (): JSX.Element => {
-  const containerRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+  const containerRef: React.RefObject<HTMLDivElement | null> = useRef<HTMLDivElement>(null);
   const currentIndex: React.MutableRefObject<number> = useRef<number>(0);
   const intervalRef: React.MutableRefObject<number | null> = useRef<number | null>(null);
   const resizeTimeoutRef: React.MutableRefObject<number | null> = useRef<number | null>(null);
