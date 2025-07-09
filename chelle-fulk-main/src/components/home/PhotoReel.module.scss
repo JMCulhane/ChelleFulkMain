@@ -1,11 +1,9 @@
 .reelWrapper {
-  position: fixed;
-  bottom: 0;
+  position: relative;
   left: 0;
   width: 100vw;
-  height: 80vh;
-  overflow-x: scroll;
-  overflow-y: hidden;
+  height: 85vh;
+  overflow: hidden;
   scroll-behavior: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -23,7 +21,7 @@
 
 .reelPhoto {
   width: 100vw;
-  height: 80vh;
+  height: 100vh;
   object-fit: fill;
   flex-shrink: 0;
 }
