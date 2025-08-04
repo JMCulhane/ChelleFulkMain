@@ -29,9 +29,6 @@ jobs:
         run: npm run build
         working-directory: ./chelle-fulk-main
 
-      - name: Debug secrets
-        run: echo "KEY=${{ secrets.AWS_ACCESS_KEY_ID }}"
-
 
       - name: Deploy to S3
         uses: jakejarvis/s3-sync-action@v0.5.1
