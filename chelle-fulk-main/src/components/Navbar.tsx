@@ -1,5 +1,6 @@
 import { JSX, useState } from "react";
 import { Disclosure, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
+import { Link } from "react-router-dom";
 
 type NavItem = {
   name: string;
@@ -8,12 +9,12 @@ type NavItem = {
 };
 
 const initialNavigation: NavItem[] = [
-  { name: 'Home', href: '#', current: true },
+  { name: 'Home', href: '/', current: true },
   { name: 'Videos', href: '#', current: false },
-  { name: 'Contact', href: '#', current: false },
+  { name: 'Contact', href: '/contact', current: false },
   { name: 'Events', href: '#', current: false },
-  { name: 'Recordings', href: '#', current: false },
-  { name: 'Calendar', href: '#', current: false }
+  { name: 'Recordings', href: '/recordings', current: false },
+  // { name: 'Calendar', href: '/calendar', current: false }
 ];
 
 function classNames(...classes: string[]) {
@@ -39,9 +40,9 @@ const Navbar: React.FC = (): JSX.Element => {
           <div className="flex flex-1 justify-center">
             <div className="flex space-x-8">
               {navigation.map((item) => (
-                <a
+                <Link
                   key={item.name}
-                  href={item.href}
+                  to={item.href}
                   aria-current={item.current ? 'page' : undefined}
                   className={classNames(
                     item.current
@@ -52,12 +53,11 @@ const Navbar: React.FC = (): JSX.Element => {
                     'text-xl'
                   )}
                   onClick={(e) => {
-                    e.preventDefault();
                     updateUserLocation(item.name);
                   }}
                 >
                   {item.name}
-                </a>
+                </Link>
               ))}
             </div>
           </div>

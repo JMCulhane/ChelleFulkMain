@@ -3,11 +3,20 @@ import React from "react";
 interface PaddingWrapperProps {
   children: React.ReactNode;
   className?: string;
+  basePadding?: string;
+  smPadding?: string;
+  mdPadding?: string;
 }
 
-const PaddingWrapper: React.FC<PaddingWrapperProps> = ({ children, className = "" }) => {
+const PaddingWrapper: React.FC<PaddingWrapperProps> = ({
+  children,
+  className = "",
+  basePadding = "p-4",
+  smPadding = "sm:p-6",
+  mdPadding = "md:p-8",
+}) => {
   return (
-    <div className={`p-4 sm:p-6 md:p-8 ${className}`}>
+    <div className={`${basePadding} ${smPadding} ${mdPadding} ${className}`}>
       {children}
     </div>
   );
