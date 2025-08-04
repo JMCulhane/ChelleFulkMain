@@ -28,7 +28,7 @@ export default function ScaleOnScroll({ children }: ScaleOnScroll): JSX.Element 
   return (
     <div
       ref={ref}
-      className="overflow-hidden flex justify-center items-center transition-all duration-1000 ease-out"
+      className="transition-all duration-1000 ease-out"
       style={{
         transform: isVisible ? 'scale(1)' : 'scale(0.8)',
         opacity: isVisible ? 1 : 0,

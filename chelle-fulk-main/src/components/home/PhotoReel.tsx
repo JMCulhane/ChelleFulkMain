@@ -1,6 +1,6 @@
 import React, { JSX, useEffect, useRef } from 'react';
 import styles from './PhotoReel.module.scss';
-import usePauseOnVisibilityChange from '../../hooks/pauseOnVisibilityChange';
+import usePauseOnVisibilityChange from '../../hooks/UI/pauseOnVisibilityChange';
 
 const assets = (r: __WebpackModuleApi.RequireContext): string[] =>
   r.keys().map((key: string): string => r(key) as string);

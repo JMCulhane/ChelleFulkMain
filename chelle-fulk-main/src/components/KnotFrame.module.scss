@@ -1,0 +1,16 @@
+.knotFrame {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.knotFrame img {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;  
+}

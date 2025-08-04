@@ -1,0 +1,38 @@
+// KnotBackground.scss
+
+@keyframes scroll-knot {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.knot-container {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.15;
+  z-index: -10;
+  background: transparent;
+}
+
+.knot-scroll {
+  animation-name: scroll-knot;
+  animation-duration: 60s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  display: flex;
+  width: max-content;
+  height: 100vh;
+}
+
+.knot-image {
+  height: 100vh;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+}
