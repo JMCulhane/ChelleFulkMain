@@ -10,9 +10,8 @@ type NavItem = {
 
 const initialNavigation: NavItem[] = [
   { name: 'Home', href: '/', current: true },
-  { name: 'Videos', href: '#', current: false },
+  { name: 'Videos', href: '/videos', current: false },
   { name: 'Contact', href: '/contact', current: false },
-  { name: 'Events', href: '#', current: false },
   { name: 'Recordings', href: '/recordings', current: false },
   // { name: 'Calendar', href: '/calendar', current: false }
 ];

@@ -1,64 +1,41 @@
+
 import React, { useState, FormEvent } from "react";
 import PaddingWrapper from "../styling/PaddingWrapper";
+import { ContactFormDTO } from '../../models/ContactFormDTO';
 
 const ContactForm: React.FC = () => {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<ContactFormDTO>({
     fullName: "",
     email: "",
-    signUpNewsletter: false,
-    inquiryRefs: {
-      liveMusic: false,
-      clinicPerformance: false,
-      educationalInquiry: false,
-      recordingServices: false,
-    },
     subject: "",
     message: "",
+    timestamp: new Date()
   });
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value, type } = e.target;
-
-    if (
-      type === "checkbox" &&
-      (name === "liveMusic" ||
-        name === "clinicPerformance" ||
-        name === "educationalInquiry" ||
-        name === "recordingServices")
-    ) {
-      const target = e.target as HTMLInputElement;
-      setForm((prev) => ({
-        ...prev,
-        inquiryRefs: {
-          ...prev.inquiryRefs,
-          [name]: target.checked,
-        },
-      }));
-    } else if (type === "checkbox") {
-      const target = e.target as HTMLInputElement;
-      setForm((prev) => ({
-        ...prev,
-        [name]: target.checked,
-      }));
-    } else {
-      setForm((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    if (!form.email || !form.subject || !form.message) {
+    if (!form.email || !form.subject || !form.message || !form.fullName) {
       alert("Please fill in all required fields.");
       return;
     }
 
-    console.log("Form submitted:", form);
+    const submission: ContactFormDTO = {
+      ...form,
+      timestamp: new Date()
+    };
+
+    console.log("Form submitted:", submission);
     alert("Thank you for your message!");
   };
 
@@ -78,25 +55,24 @@ const ContactForm: React.FC = () => {
             onSubmit={handleSubmit}
             className="space-y-8 bg-gray-900 p-8 rounded-lg border border-yellow-700 shadow-inner"
         >
-            <fieldset className="grid grid-cols-2 gap-6">
             <div>
-                <label
+              <label
                 htmlFor="fullName"
                 className="block mb-1 font-fell tracking-wide text-yellow-300"
-                >
-                Full Name
-                </label>
-                <input
+              >
+                Full Name <span className="text-yellow-600">*</span>
+              </label>
+              <input
                 id="fullName"
                 name="fullName"
                 type="text"
                 value={form.fullName}
                 onChange={handleInputChange}
+                required
                 className="w-full border border-yellow-700 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600 bg-black text-yellow-300 placeholder-yellow-600"
                 placeholder="Your full name"
-                />
+              />
             </div>
-            </fieldset>
 
             <div>
             <label
