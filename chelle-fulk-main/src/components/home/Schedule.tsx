@@ -1,10 +1,10 @@
 import { JSX, useEffect, useState } from "react";
 import { GigsDTO } from "../../models/GigsDTO";
-import Loading from "../errors/Loading";
 import PaddingWrapper from "../styling/PaddingWrapper";
 import ScaleOnScroll from "../styling/ScaleOnScroll";
 import { retrieveGigData } from "../../services/apis/googleSheetsService";
 import { MapPinIcon, MusicalNoteIcon } from "@heroicons/react/24/outline";
+import Spinner from "../errors/Spinner";
 
 const GIGS_PER_PAGE = 5;
 
@@ -19,7 +19,7 @@ const Schedule: React.FC = (): JSX.Element => {
   }, []);
 
   if (!gigData) {
-    return <Loading />;
+    return <Spinner />;
   }
 
   const totalPages = Math.ceil(gigData.length / GIGS_PER_PAGE);
