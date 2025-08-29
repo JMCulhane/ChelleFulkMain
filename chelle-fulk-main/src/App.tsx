@@ -1,14 +1,13 @@
 import './App.scss';
 import Navbar from './components/Navbar';
-import Schedule from './components/home/Schedule';
-import Foreword from './components/home/Foreword';
-import PhotoReel from './components/home/PhotoReel';
-import MonthlyCalendar from './components/pages/Calendar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useState } from 'react';
 import ContactForm from './components/pages/ContactForm';
+import AdminPage from './components/pages/AdminPage';
 import KnotBackground from './components/styling/KnotBackground';
 import Recordings from './components/pages/Recordings';
+import HomePage from './components/home/HomePage';
+import Videos from './components/pages/Videos';
 
 function App() {
 
@@ -27,47 +26,22 @@ function App() {
           <div className="fixed top-0 left-0 w-full z-50">
             <Navbar />
           </div>
-          {/* <UnfurlingTest /> */}
           <Routes>
             <Route
               path="/"
               element={
-                <>
-                  <PhotoReel />
-                  <Foreword />
-                  <Schedule />
-                </>
+                <HomePage />
               }
             />
             <Route path="/contact" element={<ContactForm />} />
-            <Route path="/calendar" element={<MonthlyCalendar />} />
+            <Route path="/videos" element={<Videos />} />
             <Route path="/recordings" element={<Recordings />} />
+            <Route path="/admin" element={<AdminPage />} />
           </Routes>
           <>
-      {/* <button
-        onClick={() => setTrigger(true)}
-        style={{ position: "fixed", top: 20, left: 20, zIndex: 10000 }}
-      >
-        Trigger Leaf Effect
-      </button> */}
-
-      {/* <LeafTransition
-        trigger={trigger}
-        onComplete={() => setTrigger(false)}
-      /> */}
       <div>
-        {/* <ScaleOnScroll>
-          <img
-            src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80"
-            alt="Sample"
-            className="w-full h-full object-cover"
-          />
-        </ScaleOnScroll> */}
-      {/* You can add more components or content below */}
     </div>
     </>
-                
-          {/* <KnotFrame /> */}
         </header>
       </div>
     </Router>
