@@ -1,14 +1,23 @@
+
 # Main Website
-- This is the redesign of Chelle Fulk's main website.
 
-- To run the application, simply clone the repo, run npm i, and then npm run start.
+This repository contains the redesign of Chelle Fulk's main website.
 
-# imageResizer.js
-- You'll notice in the base of this repository a file titled 'imageResizer.js'. When importing images for the photoreel, there was an issue in which the images were not being formatted properly, leading to a worse UX with the Carousel. The Carousel might stop slightly longer on an image and then jerk suddenly to the next. This was due to the next image in the Carousel being resized before appearing in the view. 
+## Running the Application
 
-- The imageResizer.js file was created to account for this, formatting all images to a certain size at the cost of distortion. This decision was made because the 'distorted' images prevent the aforementioned bugs and, frankly, don't look distorted. When adding images to the Carousel, it is a good idea to run them through the resizer first. This is a two-step process:
+1. Clone the repository.
+2. Run `npm install` to install dependencies.
+3. Start the application with `npm run start`.
 
-1. Add the images you want to the 'reel' folder under the public/assets folder path.
-2. Run the imageResizer.js with node imageResizer.js. (You will need to download node, if you haven't already).
+## imageResizer.js
 
-- And there you go. Good to go on the resized images.
+In the root of the `chelle-fulk-main` folder, you'll find a file named `imageResizer.js`. This script was created to address an issue with the photoreel images: unformatted images caused the Carousel to pause or jerk unexpectedly, as images were being resized on the fly.
+
+The `imageResizer.js` script formats all images to a consistent size, which prevents these issues. While this may introduce some distortion, it is minimal and results in a smoother user experience.
+
+**How to use:**
+
+1. Add the images you want to the `reel` folder under `public/assets`.
+2. Run the script with `node imageResizer.js` (ensure Node.js is installed).
+
+Your images will now be properly resized and ready for use in the Carousel via the reelBase folder under 'public/assets'.
