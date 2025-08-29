@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useState } from 'react';
 import ContactForm from './components/pages/ContactForm';
+import AdminPage from './components/pages/AdminPage';
 import KnotBackground from './components/styling/KnotBackground';
 import Recordings from './components/pages/Recordings';
 import HomePage from './components/home/HomePage';
@@ -35,6 +36,7 @@ function App() {
             <Route path="/contact" element={<ContactForm />} />
             <Route path="/videos" element={<Videos />} />
             <Route path="/recordings" element={<Recordings />} />
+            <Route path="/admin" element={<AdminPage />} />
           </Routes>
           <>
       <div>
