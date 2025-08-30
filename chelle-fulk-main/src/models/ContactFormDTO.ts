@@ -1,5 +1,5 @@
 export interface ContactFormDTO {
-  fullName: string;
+  name: string;
   email: string;
   subject: string;
   message: string;

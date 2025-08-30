@@ -35,7 +35,7 @@ const HomePage: React.FC = () => {
   const imagesLoaded = useImagePreloader(photoReel);
 
   if (!imagesLoaded) {
-    return <Spinner />;
+    return <Spinner fullScreen size={192} />;
   }
 
   return (

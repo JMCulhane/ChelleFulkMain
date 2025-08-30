@@ -1,14 +1,17 @@
 
 import React, { useState, FormEvent } from "react";
 import PaddingWrapper from "../styling/PaddingWrapper";
+import Spinner from "../errors/Spinner";
+import { loginAdmin } from '../../services/apis/adminService';
+import { useAdminAuth } from '../../context/AdminAuthContext';
 
 const AdminCredentialForm: React.FC = () => {
+  const { setCredentials } = useAdminAuth();
   const [form, setForm] = useState({
     username: "",
     password: ""
   });
-  const [loginSuccess, setLoginSuccess] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<{ success: boolean; message: string } | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleInputChange = (
@@ -23,27 +26,15 @@ const AdminCredentialForm: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setStatus(null);
     setLoading(true);
-    setError(null);
-  setLoginSuccess(false);
     try {
-      // Replace with your actual backend endpoint for login
-      const response = await fetch("http://localhost:8080/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: form.username,
-          password: form.password
-        }),
-      });
-      if (!response.ok) {
-        throw new Error("Invalid credentials or failed to retrieve credentials");
-      }
-      const data = await response.json();
-  setLoginSuccess(true);
+      const credentials = await loginAdmin(form.username, form.password);
+      setCredentials(credentials);
+      setStatus({ success: true, message: "Login successful!" });
     } catch (err: any) {
-  setError(err.message || "Unknown error");
-  setLoginSuccess(false);
+      setStatus({ success: false, message: err.message || "Unknown error" });
+      setCredentials(null);
     } finally {
       setLoading(false);
     }
@@ -95,16 +86,21 @@ const AdminCredentialForm: React.FC = () => {
                 placeholder="Admin password"
               />
             </div>
-            <button
-              type="submit"
-              className="text-neutral-50 bg-yellow-400 hover:bg-yellow-400/80 rounded-md px-3 py-2 text-sm font-medium font-fell text-xl transition"
-              disabled={loading}
-            >
-              {loading ? "Logging in..." : "Login"}
-            </button>
-            {error && <div className="text-red-600 mt-4">{error}</div>}
-            {loginSuccess && (
-              <div className="text-green-500 mt-4">Login successful!</div>
+            <div className="flex items-center gap-4">
+              <button
+                type="submit"
+                className="text-neutral-50 bg-yellow-400 hover:bg-yellow-400/80 rounded-md px-3 py-2 text-sm font-medium font-fell text-xl transition"
+                disabled={loading}
+              >
+                {loading ? "Logging in..." : "Login"}
+              </button>
+              {loading && <Spinner size={28} />}
+            </div>
+            {status && (
+              <div className={`mt-4 text-lg font-semibold ${status.success ? 'text-green-400' : 'text-red-400'}`}
+                   role="alert">
+                {status.message}
+              </div>
             )}
           </form>
         </div>

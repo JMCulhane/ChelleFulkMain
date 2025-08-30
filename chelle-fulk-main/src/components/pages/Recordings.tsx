@@ -1,9 +1,11 @@
-import React, { useRef, useLayoutEffect, useState } from 'react';
+import React, { useRef, useLayoutEffect, useState, useReducer } from 'react';
+import { useAdminAuth } from '../../context/AdminAuthContext';
+import { TrashIcon } from '@heroicons/react/24/solid';
 import LeftHuggingContainer from '../styling/LeftHuggingContainer';
 import RightHuggingContainer from '../styling/RightHuggingContainer';
 import { RecordingDTO } from '../../models/RecordingsDTO';
 import PaddingWrapper from '../styling/PaddingWrapper';
-import RecordingForm from '../forms/RecordingForm';
+import RecordingForm, { initialState as recordingInitialState, reducer, ValidationErrors as RecordingValidationErrors } from '../forms/RecordingForm';
 
 const getRecordings = (r: __WebpackModuleApi.RequireContext): string[] =>
   r.keys().map((key: string): string => r(key) as string);
@@ -57,30 +59,48 @@ const Recordings: React.FC = () => {
   const leftKnotRefs = useRef<(HTMLDivElement | null)[]>([]);
   const rightKnotRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [form, dispatch] = useReducer(reducer, recordingInitialState);
+  const [errors, setErrors] = useState<RecordingValidationErrors>({});
+  const { credentials } = useAdminAuth();
 
   return (
     <>
     <div className="relative z-10 pt-10 space-y-10">
       {mockedRecordings.map((recording, index) => {
         const isLeft = index % 2 === 0;
+        const deleteButton = credentials ? (
+          <button
+            className="absolute top-2 left-2 z-10"
+            title="Delete Recording"
+            onClick={e => {
+              e.stopPropagation();
+              // TODO: Implement delete logic
+              alert('Delete recording ' + recording.title);
+            }}
+          >
+            <TrashIcon className="h-5 w-5 text-yellow-400 mt-1" />
+          </button>
+        ) : null;
 
         if (isLeft) {
           return (
-            <div key={index} ref={el => { leftKnotRefs.current[index] = el; }}>
+            <div key={index} ref={el => { leftKnotRefs.current[index] = el; }} className="relative">
               <LeftHuggingContainer
                 image={recording.image}
                 knot={leftKnot}
                 recording={recording}
+                deleteButton={deleteButton}
               />
             </div>
           );
         } else {
           return (
-            <div key={index} ref={el => { rightKnotRefs.current[index] = el; }}>
+            <div key={index} ref={el => { rightKnotRefs.current[index] = el; }} className="relative">
               <RightHuggingContainer
                 image={recording.image}
                 knot={rightKnot}
                 recording={recording}
+                deleteButton={deleteButton}
               />
             </div>
           );
@@ -93,18 +113,31 @@ const Recordings: React.FC = () => {
       
       The short of this is to say that sibling classes or elements of elements affected by transform classes will need some additional styling to appear in the appropriate visual locations. */}
 
-          <button
+      {credentials && (
+        <button
           onClick={() => setIsModalOpen(true)}
           className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-6 rounded shadow-lg transition"
           aria-label="Add New Recording"
         >
           + Add New Recording
         </button>
-      </div>
+      )}
+    </div>
 
       {/* RecordingForm modal */}
       {isModalOpen && (
-        <RecordingForm onClose={() => setIsModalOpen(false)} />
+        <RecordingForm
+          onClose={() => setIsModalOpen(false)}
+          onCancel={() => {
+            dispatch({ type: 'RESET' });
+            setErrors({});
+            setIsModalOpen(false);
+          }}
+          form={form}
+          dispatch={dispatch}
+          errors={errors}
+          setErrors={setErrors}
+        />
       )}
       </>
   );

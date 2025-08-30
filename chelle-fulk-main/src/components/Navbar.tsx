@@ -63,11 +63,11 @@ const Navbar: React.FC = (): JSX.Element => {
 
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <Menu as="div" className="relative">
-              <MenuButton
+              {/* <MenuButton
                 className="rounded-md px-3 py-2 text-sm font-medium text-neutral-50 hover:bg-yellow-400/80 font-fell text-xl"
               >
                 Projects
-              </MenuButton>
+              </MenuButton> */}
               <MenuItems
                 transition
                 className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 transition focus:outline-none"
