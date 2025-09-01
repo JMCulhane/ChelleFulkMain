@@ -14,8 +14,6 @@ const masterAlbum: string[] = require
     require(`../../../public/assets/reel/${key.replace("./", "")}`)
   );
 
-  console.log("photoReel are: ", masterAlbum)
-
   let photoReel: string[] = [];
 
   const reelHeadLiner = '/assets/reelHeadliner/lashofs.jpg';
