@@ -10,14 +10,16 @@ type Props = {
   knot: string;
   recording: RecordingDTO;
   alignLeftOffset?: number;
+  deleteButton?: React.ReactNode;
 };
 
-const RightHuggingContainer: React.FC<Props> = ({ image, knot, recording }) => {
+const RightHuggingContainer: React.FC<Props> = ({ image, knot, recording, deleteButton }) => {
   return (
     <ScaleOnScroll>
       <div className="shift-left">
         <div className="flex flex-row-reverse items-center gap-8">
           <div className="relative knot-frame">
+            {deleteButton}
             <img src={knot} alt="Knotwork" className="knot-img" draggable={false} />
             <img src={image} alt={recording.title} className="right-nested-img" />
           </div>

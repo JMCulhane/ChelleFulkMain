@@ -3,5 +3,4 @@ export interface VideoDTO {
   title: string;
   thumbnail: string;
   embedId: string;
-  year: string;
 }
