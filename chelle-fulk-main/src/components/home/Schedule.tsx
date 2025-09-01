@@ -19,7 +19,7 @@ const Schedule: React.FC = (): JSX.Element => {
   }, []);
 
   if (!gigData) {
-    return <Spinner />;
+    return <Spinner fullScreen size={192} />;
   }
 
   const totalPages = Math.ceil(gigData.length / GIGS_PER_PAGE);
