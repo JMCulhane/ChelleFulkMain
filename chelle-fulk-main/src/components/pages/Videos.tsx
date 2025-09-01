@@ -18,7 +18,10 @@ const Videos = () => {
   const [videoErrors, setVideoErrors] = useState<VideoValidationErrors>({});
   const [videos, setVideos] = useState<VideoDTO[]>([]);
   const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [videoToDelete, setVideoToDelete] = useState<VideoDTO | null>(null);
+  const [deleting, setDeleting] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [deleteProtectionEnabled, setDeleteProtectionEnabled] = useState(true);
 
   useEffect(() => {
     let didCancel = false;
@@ -64,6 +67,21 @@ const Videos = () => {
           )}
         </div>
 
+        {/* Admin Delete Protection Toggle */}
+        {credentials && (
+          <div className="px-6 pb-2 flex items-center gap-4">
+            <label className="flex items-center cursor-pointer select-none">
+              <span className="mr-2 text-yellow-300 font-semibold">Delete Protection</span>
+              <input
+                type="checkbox"
+                checked={deleteProtectionEnabled}
+                onChange={() => setDeleteProtectionEnabled(v => !v)}
+                className="form-checkbox h-5 w-5 text-yellow-400 border-yellow-600 focus:ring-yellow-500"
+              />
+              <span className="ml-2 text-sm text-gray-300">{deleteProtectionEnabled ? 'ON' : 'OFF'}</span>
+            </label>
+          </div>
+        )}
         {/* Delete Error Message */}
         {deleteError && (
           <div className="px-6 pb-2">
@@ -84,7 +102,11 @@ const Videos = () => {
                 <div
                   key={video.id}
                   className="group cursor-pointer relative"
-                  onClick={() => openVideo(video)}
+                  onClick={e => {
+                    // Prevent opening video if delete button is clicked
+                    if ((e.target as HTMLElement).closest('button')) return;
+                    openVideo(video);
+                  }}
                 >
                   {/* Thumbnail Container */}
                   <div className="relative aspect-video bg-gray-900 overflow-hidden">
@@ -106,22 +128,67 @@ const Videos = () => {
                         title="Delete Video"
                         onClick={async e => {
                           e.stopPropagation();
-                          try {
-                            await deleteVideo(video.id, credentials?.token);
-                            setVideos(videos => videos.filter(v => v.id !== video.id));
-                            setDeleteError(null);
-                          } catch (err: any) {
-                            setDeleteError('Failed to delete video: ' + (err.message || 'Unknown error'));
+                          if (deleteProtectionEnabled) {
+                            setVideoToDelete(video);
+                          } else {
+                            setDeleting(true);
+                            try {
+                              await deleteVideo(video.id, credentials?.token);
+                              setVideos(videos => videos.filter(v => v.id !== video.id));
+                              setDeleteError(null);
+                            } catch (err: any) {
+                              setDeleteError('Failed to delete video: ' + (err.message || 'Unknown error'));
+                            } finally {
+                              setDeleting(false);
+                            }
                           }
                         }}
+                        tabIndex={-1}
                       >
                         <TrashIcon className="h-5 w-5 text-yellow-400 mt-1" />
                       </button>
                     )}
+  {/* Delete Confirmation Modal */}
+  {deleteProtectionEnabled && videoToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
+          <div className="bg-gray-900 rounded-lg shadow-lg p-8 max-w-md w-full text-center border border-yellow-400">
+            <h2 className="text-xl text-yellow-300 mb-4 font-semibold">Confirm Delete</h2>
+            <p className="text-white mb-6">Are you sure you want to delete <span className="font-bold">{videoToDelete.title}</span>?</p>
+            <div className="flex justify-center gap-6">
+              <button
+                className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded font-bold"
+                disabled={deleting}
+                onClick={async () => {
+                  setDeleting(true);
+                  try {
+                    await deleteVideo(videoToDelete.id, credentials?.token);
+                    setVideos(videos => videos.filter(v => v.id !== videoToDelete.id));
+                    setDeleteError(null);
+                    setVideoToDelete(null);
+                  } catch (err: any) {
+                    setDeleteError('Failed to delete video: ' + (err.message || 'Unknown error'));
+                  } finally {
+                    setDeleting(false);
+                  }
+                }}
+              >
+                {deleting ? 'Deleting...' : 'Yes, Delete'}
+              </button>
+              <button
+                className="bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-2 rounded font-bold border border-yellow-600"
+                disabled={deleting}
+                onClick={() => setVideoToDelete(null)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
                   </div>
                   {/* Video Info */}
                   <div className="pt-3">
-                    <h3 className="text-lg font-light leading-tight group-hover:text-gray-300 transition-colors duration-200">
+                    <h3 className="text-lg font-fell text-yellow-300 leading-tight group-hover:text-yellow-400 transition-colors duration-200">
                       {video.title}
                     </h3>
                   </div>
@@ -155,7 +222,7 @@ const Videos = () => {
               </div>
               {/* Video Title */}
               <div className="mt-4">
-                <h2 className="text-2xl font-light text-white">{selectedVideo.title}</h2>
+                <h2 className="text-2xl font-fell text-yellow-300">{selectedVideo.title}</h2>
               </div>
             </div>
           </div>

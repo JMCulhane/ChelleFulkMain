@@ -1,6 +1,6 @@
-import { JSX, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import { Disclosure, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 type NavItem = {
   name: string;
@@ -21,16 +21,21 @@ function classNames(...classes: string[]) {
 }
 
 const Navbar: React.FC = (): JSX.Element => {
+  const location = useLocation();
   const [navigation, setNavigation] = useState<NavItem[]>(initialNavigation);
 
-  const updateUserLocation = (name: string): void => {
+  useEffect(() => {
     setNavigation(prev =>
-      prev.map(item => ({
-        ...item,
-        current: item.name === name,
-      }))
+      prev.map(item => {
+        // Default to Home for root path
+        if (location.pathname === '/' && item.name === 'Home') {
+          return { ...item, current: true };
+        }
+        // Otherwise, match by href
+        return { ...item, current: location.pathname.startsWith(item.href) && item.href !== '/' };
+      })
     );
-  };
+  }, [location.pathname]);
 
   return (
     <Disclosure as="nav" className="bg-black">
@@ -51,9 +56,6 @@ const Navbar: React.FC = (): JSX.Element => {
                     'font-fell',
                     'text-xl'
                   )}
-                  onClick={(e) => {
-                    updateUserLocation(item.name);
-                  }}
                 >
                   {item.name}
                 </Link>

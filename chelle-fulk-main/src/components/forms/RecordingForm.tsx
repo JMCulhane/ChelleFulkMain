@@ -6,7 +6,6 @@ import { useAdminAuth } from '../../context/AdminAuthContext';
 interface SampleDTO {
   trackName: string;
   audioUrl: string;
-  duration?: number;
 }
 
 interface RecordingDTO {
@@ -20,7 +19,7 @@ interface RecordingDTO {
   samples: SampleDTO[];
 }
 
-export const initialSample: SampleDTO = { trackName: "", audioUrl: "", duration: undefined };
+export const initialSample: SampleDTO = { trackName: "", audioUrl: "" };
 
 export const initialState: RecordingDTO = {
   image: "",
@@ -68,10 +67,7 @@ export function reducer(state: RecordingDTO, action: Action): RecordingDTO {
       const updated = [...state.samples];
       updated[action.index] = {
         ...updated[action.index],
-        [action.field]:
-          action.field === "duration" && typeof action.value === "string"
-            ? Number(action.value)
-            : action.value,
+        [action.field]: action.value,
       };
       return { ...state, samples: updated };
     }
@@ -95,7 +91,7 @@ export type ValidationErrors = Partial<{
   yearPublished: string;
   trackCount: string;
   performers: string[];
-  samples: { trackName?: string; audioUrl?: string; duration?: string }[];
+  samples: { trackName?: string; audioUrl?: string }[];
 }>;
 
 
@@ -159,10 +155,9 @@ const RecordingForm: React.FC<RecordingFormProps> = ({ onClose, onCancel, form, 
 
     // Validate samples: trackName and audio file required
     const sampleErrors = data.samples.map((sample, i) => {
-      const sErr: { trackName?: string; audioUrl?: string; duration?: string } = {};
+      const sErr: { trackName?: string; audioUrl?: string } = {};
       if (!sample.trackName.trim()) sErr.trackName = "Track name is required.";
       if (!audioFiles[i]) sErr.audioUrl = "Audio file is required.";
-      if (sample.duration !== undefined && sample.duration < 0) sErr.duration = "Duration cannot be negative.";
       return sErr;
     });
     if (sampleErrors.some((e) => Object.keys(e).length > 0)) {
@@ -214,7 +209,6 @@ const RecordingForm: React.FC<RecordingFormProps> = ({ onClose, onCancel, form, 
     // Sample meta
     form.samples.forEach((sample, i) => {
       formData.append(`samples[${i}][trackName]`, sample.trackName);
-      formData.append(`samples[${i}][duration]`, sample.duration ? String(sample.duration) : "");
     });
 
     try {
@@ -483,31 +477,7 @@ const RecordingForm: React.FC<RecordingFormProps> = ({ onClose, onCancel, form, 
                     <p className="text-red-600 text-sm">{errors.samples[i].audioUrl}</p>
                   )}
 
-                  <input
-                    type="number"
-                    min={0}
-                    placeholder="Duration (seconds)"
-                    value={sample.duration ?? ""}
-                    onChange={(e) =>
-                      dispatch({
-                        type: "SET_SAMPLE_FIELD",
-                        index: i,
-                        field: "duration",
-                        value: e.target.value,
-                      })
-                    }
-                    className={`w-full border rounded-md px-4 py-2 focus:outline-none focus:ring-2 bg-black text-yellow-300 placeholder-yellow-600
-                      ${
-                        errors.samples &&
-                        errors.samples[i] &&
-                        errors.samples[i].duration
-                          ? "border-red-600 focus:ring-red-600"
-                          : "border-yellow-700 focus:ring-yellow-600"
-                      }`}
-                  />
-                  {errors.samples && errors.samples[i] && errors.samples[i].duration && (
-                    <p className="text-red-600 text-sm">{errors.samples[i].duration}</p>
-                  )}
+                  {/* Duration field removed */}
 
                   {form.samples.length > 1 && (
                     <button

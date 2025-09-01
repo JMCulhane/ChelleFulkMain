@@ -40,3 +40,4 @@ export async function retrieveGigData(): Promise<any[]> {
     return [];
   }
 }
+// Removed duplicate/erroneous code block
