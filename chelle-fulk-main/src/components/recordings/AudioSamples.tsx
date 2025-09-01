@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PlayIcon, PauseIcon } from '@heroicons/react/24/outline';
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 import { SampleDTO } from '../../models/RecordingsDTO';
 import './AudioSamples.scss';
 
@@ -14,25 +14,10 @@ const formatTime = (seconds: number) => {
 };
 
 const AudioSamples: React.FC<Props> = ({ samples }) => {
-  const [currentlyPlaying, setCurrentlyPlaying] = useState<string | null>(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const handlePlayPause = (audioUrl: string) => {
-    const audioElements = document.querySelectorAll('audio');
-    
-    if (currentlyPlaying === audioUrl) {
-      const currentAudio = document.querySelector(`audio[src="${audioUrl}"]`) as HTMLAudioElement;
-      currentAudio?.pause();
-      setCurrentlyPlaying(null);
-    } else {
-      audioElements.forEach(audio => {
-        audio.pause();
-        audio.currentTime = 0;
-      });
-      
-      const newAudio = document.querySelector(`audio[src="${audioUrl}"]`) as HTMLAudioElement;
-      newAudio?.play();
-      setCurrentlyPlaying(audioUrl);
-    }
+  const handleToggle = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
   };
 
   if (samples.length === 0) return null;
@@ -40,31 +25,49 @@ const AudioSamples: React.FC<Props> = ({ samples }) => {
   return (
     <div className="scroll-container space-y-2">
       {samples.map((sample, index) => (
-        <div 
-          key={index} 
-          className="flex items-center gap-3 p-2 bg-black/20 rounded-md hover:bg-black/30 transition-colors"
+        <div
+          key={index}
+          className="flex flex-col gap-1 p-2 bg-black/20 rounded-md hover:bg-black/30 transition-colors"
         >
-          <button
-            onClick={() => handlePlayPause(sample.audioUrl)}
-            className="flex items-center justify-center w-8 h-8 bg-yellow-400/20 rounded-full hover:bg-yellow-400/40 transition-colors flex-shrink-0"
-          >
-            {currentlyPlaying === sample.audioUrl ? (
-              <PauseIcon className="h-4 w-4 text-yellow-400" />
-            ) : (
-              <PlayIcon className="h-4 w-4 text-yellow-400 ml-0.5" />
-            )}
-          </button>
-          <span className="text-sm flex-grow">{sample.trackName}</span>
-          {sample.duration && (
-            <span className="text-xs text-gray-400">
-              {formatTime(sample.duration)}
-            </span>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => handleToggle(index)}
+              className="flex items-center justify-center w-8 h-8 bg-yellow-400/20 rounded-full hover:bg-yellow-400/40 transition-colors flex-shrink-0"
+              aria-label={openIndex === index ? 'Collapse sample' : 'Expand sample'}
+            >
+              {openIndex === index ? (
+                <ChevronUpIcon className="h-4 w-4 text-yellow-400" />
+              ) : (
+                <ChevronDownIcon className="h-4 w-4 text-yellow-400 ml-0.5" />
+              )}
+            </button>
+            <span className="text-sm flex-grow">{sample.trackName}</span>
+          </div>
+          {/* Show embedded player when expanded */}
+          {openIndex === index && (
+            <div className="w-full flex justify-center mt-2">
+              {sample.audioUrl ? (
+                sample.audioUrl.includes('embed.music.apple.com') ? (
+                  <iframe
+                    allow="autoplay *; encrypted-media *;"
+                    frameBorder="0"
+                    height="150"
+                    style={{ width: '100%', maxWidth: 400, borderRadius: 8 }}
+                    src={sample.audioUrl}
+                    title={sample.trackName}
+                  />
+                ) : (
+                  <audio
+                    src={sample.audioUrl}
+                    controls
+                    className="w-full"
+                  />
+                )
+              ) : (
+                <div className="text-xs text-neutral-300">Sample details unavailable.</div>
+              )}
+            </div>
           )}
-          <audio
-            src={sample.audioUrl}
-            onEnded={() => setCurrentlyPlaying(null)}
-            onPause={() => setCurrentlyPlaying(null)}
-          />
         </div>
       ))}
     </div>

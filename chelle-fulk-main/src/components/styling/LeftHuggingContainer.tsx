@@ -11,9 +11,10 @@ interface Props {
   knot: string;
   recording: RecordingDTO;
   alignRightOffset?: number;
+  deleteButton?: React.ReactNode;
 }
 
-const LeftHuggingContainer: React.FC<Props> = ({ image, knot, recording, alignRightOffset }) => {
+const LeftHuggingContainer: React.FC<Props> = ({ image, knot, recording, alignRightOffset, deleteButton }) => {
   // Style adjustment to push samples rightwards aligning under right knot
   const samplesStyle = alignRightOffset
     ? { paddingRight: `${alignRightOffset}px` }
@@ -24,6 +25,7 @@ const LeftHuggingContainer: React.FC<Props> = ({ image, knot, recording, alignRi
       <div className="shift-right">
         <div className="flex flex-row items-center gap-8">
           <div className="relative knot-frame">
+            {deleteButton}
             <img src={knot} alt="Knotwork" className="knot-img" draggable={false} />
             <img src={image} alt={recording.title} className="left-nested-img" />
           </div>

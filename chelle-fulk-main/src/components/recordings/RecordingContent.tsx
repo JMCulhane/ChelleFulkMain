@@ -10,7 +10,7 @@ const RecordingsContent: React.FC<Props> = ({ recording }) => {
   return (
   <div className="w-[45vw] mx-auto flex flex-col justify-center text-white font-fell px-4">
       <p className="text-3xl text-yellow-400">
-        {recording.title} ({recording.yearPublished})
+        {recording.title}
       </p>
       <p className="text-xl mt-1">
         {recording.description}

@@ -2,6 +2,7 @@ import './App.scss';
 import Navbar from './components/Navbar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useState } from 'react';
+import { AdminAuthProvider } from './context/AdminAuthContext';
 import ContactForm from './components/pages/ContactForm';
 import AdminPage from './components/pages/AdminPage';
 import KnotBackground from './components/styling/KnotBackground';
@@ -19,32 +20,34 @@ function App() {
   };
   
   return (
-    <Router>
-      <div className="App relative">
-        <KnotBackground />
-        <header className="App-header">
-          <div className="fixed top-0 left-0 w-full z-50">
-            <Navbar />
-          </div>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <HomePage />
-              }
-            />
-            <Route path="/contact" element={<ContactForm />} />
-            <Route path="/videos" element={<Videos />} />
-            <Route path="/recordings" element={<Recordings />} />
-            <Route path="/admin" element={<AdminPage />} />
-          </Routes>
-          <>
-      <div>
-    </div>
-    </>
-        </header>
+    <AdminAuthProvider>
+      <Router>
+        <div className="App relative">
+          <KnotBackground />
+          <header className="App-header">
+            <div className="fixed top-0 left-0 w-full z-50">
+              <Navbar />
+            </div>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <HomePage />
+                }
+              />
+              <Route path="/contact" element={<ContactForm />} />
+              <Route path="/videos" element={<Videos />} />
+              <Route path="/recordings" element={<Recordings />} />
+              <Route path="/admin" element={<AdminPage />} />
+            </Routes>
+            <>
+        <div>
       </div>
-    </Router>
+      </>
+          </header>
+        </div>
+      </Router>
+    </AdminAuthProvider>
   );
 }
 
