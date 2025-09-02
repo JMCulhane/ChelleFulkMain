@@ -4,6 +4,10 @@ import Spinner from "../errors/Spinner";
 import PhotoReel from "./PhotoReel";
 import Foreword from "./Foreword";
 import Schedule from "./Schedule";
+import PortfolioRow from "./portfolio/PortfolioRow";
+import PortfolioRowGridHybrid from "./portfolio/PortfolioRowGridHybrid";
+import ScaleOnScroll from "../styling/ScaleOnScroll";
+import Portfolio from "./Portfolio";
 
 
 // Collect all reel images once
@@ -41,6 +45,7 @@ const HomePage: React.FC = () => {
       <PhotoReel reel={photoReel} />
       <Foreword />
       <Schedule />
+      <Portfolio />
     </>
   );
 };
