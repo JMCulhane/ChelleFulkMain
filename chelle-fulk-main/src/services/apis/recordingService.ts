@@ -8,7 +8,7 @@ export const getRecordings = async (): Promise<RecordingDTO[]> => {
   // Mock data for three albums
   return [
     {
-      image: "/assets/recordings/2DoBeatles.png",
+      image: "/assets/recordings/images/2DoBeatles.png",
       title: "2 Do Beatles",
   // yearPublished removed
       description: "2 Do Beatles is a creative tribute to the legendary band, reimagining classic Beatles songs with unique arrangements for violin and friends. A fresh take on timeless hits for fans old and new.",
@@ -17,17 +17,37 @@ export const getRecordings = async (): Promise<RecordingDTO[]> => {
       link: "https://chellefulk.square.site/product/2-do-beatles/20?cp=true&sa=false&sbp=false&q=false&category_id=2",
       samples: [
         {
-          trackName: "Yesterday (Violin Version)",
-          audioUrl: "#"
+          trackName: "The Fool On the Hill",
+          audioUrl: "/assets/recordings/2doBeatles/1 The Fool On the Hill.mp3"
         },
         {
-          trackName: "Hey Jude (Instrumental)",
-          audioUrl: "#"
+          trackName: "If I Fell",
+          audioUrl: "/assets/recordings/2doBeatles/2 If I Fell.mp3"
+        },
+        {
+          trackName: "All My Loving",
+          audioUrl: "/assets/recordings/2doBeatles/3 All My Loving.mp3"
+        },
+        {
+          trackName: "I'm Looking Through You",
+          audioUrl: "/assets/recordings/2doBeatles/4 I'm Looking Through You.mp3"
+        },
+        {
+          trackName: "Audio Track 5",
+          audioUrl: "/assets/recordings/2doBeatles/5 Audio Track.mp3"
+        },
+        {
+          trackName: "Audio Track 6",
+          audioUrl: "/assets/recordings/2doBeatles/6 Audio Track.mp3"
+        },
+        {
+          trackName: "Audio Track 7",
+          audioUrl: "/assets/recordings/2doBeatles/7 Audio Track.mp3"
         }
       ]
     },
     {
-      image: "/assets/recordings/Keltish.png",
+      image: "/assets/recordings/images/Keltish.png",
       title: "Keltish",
   // yearPublished removed
       description: "Keltish brings together the best of Celtic and folk traditions, featuring lively fiddle tunes, heartfelt ballads, and a fusion of world music influences. A musical journey across the British Isles and beyond.",
@@ -36,33 +56,48 @@ export const getRecordings = async (): Promise<RecordingDTO[]> => {
       link: "https://chellefulk.square.site/product/keltish/1?cp=true&sa=false&sbp=false&q=false&category_id=2",
       samples: [
         {
-          trackName: "Parting Glass",
-          audioUrl: "https://embed.music.apple.com/us/album/parting-glass/211000452?i=211000482"
+          trackName: "Dublin Lullaby",
+          audioUrl: "/assets/recordings/keltish/1 Dublin Lullaby.mp3"
+        },
+        {
+          trackName: "Norwegian Wood",
+          audioUrl: "/assets/recordings/keltish/2 Norwegian Wood.mp3"
+        },
+        {
+          trackName: "Redhaired Boy-Drowsy Maggie",
+          audioUrl: "/assets/recordings/keltish/3 Redhaired Boy-Drowsy Maggie.mp3"
         },
         {
           trackName: "Star of the County Down",
-          audioUrl: "https://embed.music.apple.com/us/album/star-of-the-county-down/211000452?i=211000458"
+          audioUrl: "/assets/recordings/keltish/4 Star of the County Down.mp3"
         }
       ]
     },
     {
-      image: "/assets/recordings/IslandTime.png",
+      image: "/assets/recordings/images/IslandTime.png",
       title: "Island Time",
   // yearPublished removed
       description: "Island Time is a collection of original and classic tunes with a tropical flair, blending violin, steel drums, and guitar for a relaxing, beachy vibe. Perfect for unwinding or bringing the island spirit to any occasion.",
       performers: ["Chelle Fulk", "Pete Kudelich"],
       trackCount: 10,
       link: "https://chellefulk.square.site/product/island-time/19?cp=true&sa=false&sbp=false&q=false&category_id=2",
-      samples: [
-        {
-          trackName: "Island Breeze",
-          audioUrl: "#"
-        },
-        {
-          trackName: "Tropical Dreams",
-          audioUrl: "#"
-        }
-      ]
+        samples: [
+          { trackName: "Yell Yell", audioUrl: "/assets/recordings/islandTime/01 Yell Yell.mp3" },
+          { trackName: "Carolina in the Morning", audioUrl: "/assets/recordings/islandTime/02 Carolina in the Morning.mp3" },
+          { trackName: "Shenandoah", audioUrl: "/assets/recordings/islandTime/03 Shenandoah.mp3" },
+          { trackName: "Songs of Island", audioUrl: "/assets/recordings/islandTime/04 Songs of Island.mp3" },
+          { trackName: "Cameron Polkas", audioUrl: "/assets/recordings/islandTime/05 Cameron Polkas.mp3" },
+          { trackName: "El Cerifo", audioUrl: "/assets/recordings/islandTime/06 El Cerifo.mp3" },
+          { trackName: "Three Ravens", audioUrl: "/assets/recordings/islandTime/07 Three Ravens.mp3" },
+          { trackName: "El Choclo", audioUrl: "/assets/recordings/islandTime/08 El Choclo.mp3" },
+          { trackName: "Beaumont Rag", audioUrl: "/assets/recordings/islandTime/09 Beaumont Rag.mp3" },
+          { trackName: "Ashokan Farewell", audioUrl: "/assets/recordings/islandTime/10 Ashokan Farewell.mp3" },
+          { trackName: "Morena-Cuba-Noche de Carnival", audioUrl: "/assets/recordings/islandTime/11 Morena-Cuba-Noche de Carnival.mp3" },
+          { trackName: "Polovetsian Dance", audioUrl: "/assets/recordings/islandTime/12 Polovetsian Dance.mp3" },
+          { trackName: "Chopinova", audioUrl: "/assets/recordings/islandTime/13 Chopinova.mp3" },
+          { trackName: "Storm in the Banks", audioUrl: "/assets/recordings/islandTime/14 Storm in the Banks.mp3" },
+          { trackName: "Island Time", audioUrl: "/assets/recordings/islandTime/15 Island Time.mp3" }
+        ]
     }
   ];
 };
