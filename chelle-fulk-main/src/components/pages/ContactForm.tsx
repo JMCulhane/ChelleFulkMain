@@ -2,6 +2,7 @@
 import React, { useState, FormEvent } from "react";
 import Spinner from "../errors/Spinner";
 import { submitContactForm } from '../../services/apis/contactFormService';
+import emailjs from 'emailjs-com';
 import PaddingWrapper from "../styling/PaddingWrapper";
 import { ContactFormDTO } from '../../models/ContactFormDTO';
 
@@ -10,8 +11,7 @@ const ContactForm: React.FC = () => {
     name: "",
     email: "",
     subject: "",
-    message: "",
-    timestamp: new Date()
+    message: ""
   });
 
   const handleInputChange = (
@@ -40,14 +40,30 @@ const ContactForm: React.FC = () => {
 
     setLoading(true);
     const submission: ContactFormDTO = {
-      ...form,
-      timestamp: new Date()
+      ...form
     };
 
+    // === EmailJS integration ===
+    /*
     try {
-      console.log('Submitting contact form:', submission);
-      const response = await submitContactForm(submission);
-      if (response.success) {
+      // Use your actual SERVICE_ID and TEMPLATE_ID here
+      const SERVICE_ID = process.env.REACT_APP_EMAILJS_SERVICE_ID;
+      const TEMPLATE_ID = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
+
+      const templateParams = {
+        from_name: form.name,
+        from_email: form.email,
+        subject: form.subject,
+        message: form.message,
+      };
+
+      const response = await emailjs.send(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        templateParams
+      );
+
+      if (response.status === 200) {
         setStatus({ success: true, message: "Your email has been successfully submitted." });
         setForm({
           name: "",
@@ -57,11 +73,37 @@ const ContactForm: React.FC = () => {
           timestamp: new Date()
         });
       } else {
-        setStatus({ success: false, message: response.message || "There was an error sending your message. Please try again later." });
+        setStatus({ success: false, message: "There was an error sending your message. Please try again later." });
       }
     } catch (error) {
       console.error('Error sending contact form:', error);
       setStatus({ success: false, message: "There was an error sending your message. Please try again later." });
+    } finally {
+      setLoading(false);
+    }
+    // === END EmailJS integration ===
+    */
+
+    // === Backend API submission ===
+    try {
+      console.log('Submitting contact form:', submission);
+      const response = await submitContactForm(submission);
+      // EmailJS returns an object with 'status' and 'text' properties
+      if (response.status === 200) {
+        setStatus({ success: true, message: "Your email has been successfully submitted." });
+        setForm({
+          name: "",
+          email: "",
+          subject: "",
+          message: ""
+        });
+      } else {
+        setStatus({ success: false, message: response.text || "There was an error sending your message. Please try again later." });
+      }
+    } catch (error) {
+  console.error('Error sending contact form:', error);
+  const errMsg = (error as any)?.message || "There was an error sending your message. Please try again later.";
+  setStatus({ success: false, message: errMsg });
     } finally {
       setLoading(false);
     }

@@ -4,9 +4,6 @@ import Spinner from "../errors/Spinner";
 import PhotoReel from "./PhotoReel";
 import Foreword from "./Foreword";
 import Schedule from "./Schedule";
-import PortfolioRow from "./portfolio/PortfolioRow";
-import PortfolioRowGridHybrid from "./portfolio/PortfolioRowGridHybrid";
-import ScaleOnScroll from "../styling/ScaleOnScroll";
 import Portfolio from "./Portfolio";
 
 

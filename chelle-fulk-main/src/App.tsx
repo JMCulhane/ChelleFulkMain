@@ -38,7 +38,9 @@ function App() {
               <Route path="/contact" element={<ContactForm />} />
               <Route path="/videos" element={<Videos />} />
               <Route path="/recordings" element={<Recordings />} />
-              <Route path="/admin" element={<AdminPage />} />
+              
+                <Route path="/admin" element={<AdminPage />} />
+             
             </Routes>
             <>
         <div>

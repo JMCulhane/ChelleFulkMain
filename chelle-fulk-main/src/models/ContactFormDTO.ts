@@ -3,5 +3,4 @@ export interface ContactFormDTO {
   email: string;
   subject: string;
   message: string;
-  timestamp: Date;
 }
