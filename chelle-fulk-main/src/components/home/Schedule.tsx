@@ -2,7 +2,7 @@ import { JSX, useEffect, useState } from "react";
 import { GigsDTO } from "../../models/GigsDTO";
 import PaddingWrapper from "../styling/PaddingWrapper";
 import ScaleOnScroll from "../styling/ScaleOnScroll";
-import { retrieveGigData } from "../../services/apis/googleSheetsService";
+import { getSchedule } from "../../services/apis/scheduleService";
 import { MapPinIcon, MusicalNoteIcon } from "@heroicons/react/24/outline";
 import Spinner from "../errors/Spinner";
 
@@ -13,7 +13,8 @@ const Schedule: React.FC = (): JSX.Element => {
   const [currentPage, setCurrentPage] = useState<number>(0);
 
   useEffect(() => {
-    retrieveGigData().then((data) => {
+    getSchedule().then((data) => {
+      console.log("Data is: ", data)
       setGigData(data as GigsDTO[]);
     });
   }, []);

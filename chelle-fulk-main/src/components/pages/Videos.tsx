@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Spinner from '../errors/Spinner';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 import { initialState as videoInitialState, ValidationErrors as VideoValidationErrors } from '../forms/VideoForm';
-import { getVideos, deleteVideo } from '../../services/apis/videoService';
+// import { getVideos, deleteVideo } from '../../services/apis/videoService';
+// Backend video service calls are commented out because backend is not available on static hosting.
 import VideoForm from '../forms/VideoForm';
 import { PlayIcon, TrashIcon } from '@heroicons/react/24/solid';
 import PaddingWrapper from '../styling/PaddingWrapper';
 import { VideoDTO } from '../../models/VideoDTO';
+import { deleteVideo, getVideos } from '../../services/apis/videoService';
 
 
 
@@ -16,6 +18,7 @@ const Videos = () => {
   const [showVideoForm, setShowVideoForm] = useState(false);
   const [videoForm, setVideoForm] = useState(videoInitialState);
   const [videoErrors, setVideoErrors] = useState<VideoValidationErrors>({});
+  // Video data is now mocked for static hosting. Replace with backend call if backend is restored.
   const [videos, setVideos] = useState<VideoDTO[]>([]);
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [videoToDelete, setVideoToDelete] = useState<VideoDTO | null>(null);
@@ -23,6 +26,7 @@ const Videos = () => {
   const [loading, setLoading] = useState(true);
   const [deleteProtectionEnabled, setDeleteProtectionEnabled] = useState(true);
 
+  // useEffect for backend video fetching is commented out. Static hosting uses mocked data above.
   useEffect(() => {
     let didCancel = false;
     setLoading(true);
@@ -233,13 +237,13 @@ const Videos = () => {
           <VideoForm
             onClose={async () => {
               setShowVideoForm(false);
-              // Re-fetch videos after successful create
-              try {
-                const backendVideos = await getVideos();
-                setVideos(Array.isArray(backendVideos) ? backendVideos : []);
-              } catch {
-                setVideos([]);
-              }
+              // Video re-fetch after create is disabled for static hosting. Backend call commented out.
+              // try {
+              //   const backendVideos = await getVideos();
+              //   setVideos(Array.isArray(backendVideos) ? backendVideos : []);
+              // } catch {
+              //   setVideos([]);
+              // }
             }}
             onCancel={() => {
               setVideoForm(videoInitialState);

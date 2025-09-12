@@ -43,7 +43,14 @@ const Recordings: React.FC = () => {
 
   return (
     <>
-      <div className="relative z-10 pt-10 space-y-10">
+    <PaddingWrapper mdPadding="md:pt-12 md:p-8">
+      <div className="px-6 pt-8 flex items-center justify-between">
+        <h1 className="text-4xl font-fell border-b border-yellow-600 tracking-wider text-yellow-300">
+          Recordings
+        </h1>
+      </div>
+    </PaddingWrapper>
+      <div className="relative z-10">
         {loading ? (
           <div className="flex justify-center items-center min-h-[20vh]">
             <Spinner size={64} />

@@ -4,6 +4,7 @@ import Spinner from "../errors/Spinner";
 import PhotoReel from "./PhotoReel";
 import Foreword from "./Foreword";
 import Schedule from "./Schedule";
+import Portfolio from "./Portfolio";
 
 
 // Collect all reel images once
@@ -13,8 +14,6 @@ const masterAlbum: string[] = require
   .map((key: string) =>
     require(`../../../public/assets/reel/${key.replace("./", "")}`)
   );
-
-  console.log("photoReel are: ", masterAlbum)
 
   let photoReel: string[] = [];
 
@@ -43,6 +42,7 @@ const HomePage: React.FC = () => {
       <PhotoReel reel={photoReel} />
       <Foreword />
       <Schedule />
+      <Portfolio />
     </>
   );
 };
