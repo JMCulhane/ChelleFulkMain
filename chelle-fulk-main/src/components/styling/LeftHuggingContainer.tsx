@@ -1,7 +1,6 @@
 import React from 'react';
 import './HugContainer.scss';
 import ScaleOnScroll from './ScaleOnScroll';
-import { MusicalNoteIcon } from '@heroicons/react/24/outline';
 import { RecordingDTO } from '../../models/RecordingsDTO';
 import AudioSamples from '../recordings/AudioSamples';
 import RecordingContent from '../recordings/RecordingContent';
