@@ -36,5 +36,5 @@ jobs:
           server: ftp.gip.superb.net
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: chelle-fulk-main/build
+          local-dir: chelle-fulk-main/build/
           server-dir: chellefulk.com/public_html/
