@@ -1,4 +1,4 @@
-name: Deploy chelle-fulk-main to S3
+name: Build chelle-fulk-main for superb.net
 
 on:
   push:
@@ -30,13 +30,11 @@ jobs:
         working-directory: ./chelle-fulk-main
 
 
-      - name: Deploy to S3
-        uses: jakejarvis/s3-sync-action@v0.5.1
+      - name: Deploy to superb.net via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          args: --delete
-        env:
-          AWS_S3_BUCKET: chelle-fulk-main
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: us-east-1
-          SOURCE_DIR: chelle-fulk-main/build
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: chelle-fulk-main/build
+          server-dir: chellefulk.com/public_html/
