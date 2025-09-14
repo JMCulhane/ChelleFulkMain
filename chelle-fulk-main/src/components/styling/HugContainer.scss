@@ -1,13 +1,31 @@
+@media (max-width: 700px) {
+  .flex-row,
+  .flex-row-reverse {
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+    align-items: center !important;
+  }
+  .knot-frame,
+  .samples-frame {
+    margin-bottom: 1.5rem;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+}
 .knot-frame {
   position: relative;
-  width: clamp(150px, 20vw, 400px);
+  width: 300px;
+  min-width: 300px;
+  max-width: 300px;
   aspect-ratio: 1;
   flex-shrink: 0;
 }
 
 .samples-frame {
   position: relative;
-  width: clamp(150px, 20vw, 400px);
+  width: 300px;
+  min-width: 300px;
+  max-width: 300px;
   aspect-ratio: 1;
   flex-shrink: 0;
 }
