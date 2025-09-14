@@ -12,12 +12,15 @@
   flex-shrink: 0;
 }
 
-.shift-left {
-  transform: translate(-5%, 20%);
+.content-container {
+  position: relative;
+  width: clamp(150px, 20vw, 400px);
+  aspect-ratio: 1;
+  flex-shrink: 0;
 }
 
 .shift-right {
-  transform: translate(5%, 20%);
+  transform: translateX(5%);
 }
 
 
