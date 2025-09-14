@@ -32,6 +32,8 @@ const LeftHuggingContainer: React.FC<Props> = ({ image, knot, recording, alignRi
           <div className="flex flex-row gap-8" style={samplesStyle}>
             <RecordingContent recording={recording} />
 
+          </div>
+          <div>
             {recording.samples.length > 0 && (
               <div className="mt-2 samples-frame">
                 <p className="text-lg font-fell text-yellow-400 mb-2">Listen to samples:</p>
