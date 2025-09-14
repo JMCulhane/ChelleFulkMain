@@ -41,6 +41,10 @@ const Recordings: React.FC = () => {
     return () => { cancelled = true; };
   }, []);
 
+  // Global audio state and refs for cross-album control
+  const [playingId, setPlayingId] = useState<string | null>(null);
+  const audioRefs = useRef<{ [id: string]: HTMLAudioElement | null }>({});
+
   return (
     <>
     <PaddingWrapper mdPadding="md:pt-12 md:p-8">
@@ -82,6 +86,9 @@ const Recordings: React.FC = () => {
                     knot={leftKnot}
                     recording={recording}
                     deleteButton={deleteButton}
+                    playingId={playingId}
+                    setPlayingId={setPlayingId}
+                    audioRefs={audioRefs}
                   />
                 </div>
               );
@@ -93,6 +100,9 @@ const Recordings: React.FC = () => {
                     knot={rightKnot}
                     recording={recording}
                     deleteButton={deleteButton}
+                    playingId={playingId}
+                    setPlayingId={setPlayingId}
+                    audioRefs={audioRefs}
                   />
                 </div>
               );

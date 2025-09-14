@@ -11,9 +11,14 @@ type Props = {
   recording: RecordingDTO;
   alignLeftOffset?: number;
   deleteButton?: React.ReactNode;
+  playingId: string | null;
+  setPlayingId: (id: string | null) => void;
+  audioRefs: React.MutableRefObject<{ [id: string]: HTMLAudioElement | null }>;
 };
 
-const RightHuggingContainer: React.FC<Props> = ({ image, knot, recording, deleteButton }) => {
+const RightHuggingContainer: React.FC<Props> = ({ image, knot, recording, deleteButton, playingId, setPlayingId, audioRefs }) => {
+  // Global audio control is now managed by parent
+
   return (
     <ScaleOnScroll>
       <div className="shift-right">
@@ -22,7 +27,14 @@ const RightHuggingContainer: React.FC<Props> = ({ image, knot, recording, delete
             {recording.samples.length > 0 && (
               <div className="mt-2 samples-frame">
                 <p className="text-lg font-fell text-yellow-400 mb-2">Listen to samples:</p>
-                <AudioSamples samples={recording.samples} />
+                {/* Global audio control props must be provided by parent */}
+                <AudioSamples
+                  samples={recording.samples}
+                  albumId={recording.title}
+                  playingId={playingId}
+                  setPlayingId={setPlayingId}
+                  audioRefs={audioRefs}
+                />
               </div>
             )}
           </div>
