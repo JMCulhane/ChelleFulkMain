@@ -36,7 +36,6 @@ const RecordingsContent: React.FC<Props> = ({ recording }) => {
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block bg-yellow-400/80 rounded-md px-4 py-2 text-white text-lg hover:bg-yellow-400 transition-colors"
-          style={{ cursor: 'pointer', pointerEvents: 'auto', zIndex: 10 }}
         >
           Buy Album
         </a>

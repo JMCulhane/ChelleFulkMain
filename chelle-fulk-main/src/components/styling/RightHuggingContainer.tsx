@@ -16,8 +16,14 @@ type Props = {
 const RightHuggingContainer: React.FC<Props> = ({ image, knot, recording, deleteButton }) => {
   return (
     <ScaleOnScroll>
-      <div className="shift-right">
-        <div className="flex flex-row items-center gap-8">
+      <div className="shift-left">
+        <div className="flex flex-row-reverse items-center gap-8">
+          <div className="relative knot-frame">
+            {deleteButton}
+            <img src={knot} alt="Knotwork" className="knot-img" draggable={false} />
+            <img src={image} alt={recording.title} className="right-nested-img" />
+          </div>
+
           <div className="flex flex-row gap-8">
             {recording.samples.length > 0 && (
               <div className="mt-2 samples-frame">
@@ -25,14 +31,7 @@ const RightHuggingContainer: React.FC<Props> = ({ image, knot, recording, delete
                 <AudioSamples samples={recording.samples} />
               </div>
             )}
-          </div>
-          <div>
             <RecordingContent recording={recording} />
-          </div>
-          <div className="relative knot-frame">
-            {deleteButton}
-            <img src={knot} alt="Knotwork" className="knot-img" draggable={false} />
-            <img src={image} alt={recording.title} className="right-nested-img" />
           </div>
         </div>
       </div>
