@@ -11,10 +11,10 @@ export const getRecordings = async (): Promise<RecordingDTO[]> => {
       image: "/assets/recordings/images/2DoBeatles.png",
       title: "2 Do Beatles",
   // yearPublished removed
-      description: "2 Do Beatles is a creative tribute to the legendary band, reimagining classic Beatles songs with unique instrumental arrangements for violin and friends. A fresh take on timeless hits for fans old and new.",
+      description: "2 Do Beatles is a creative tribute to the legendary band, reimagining classic Beatles songs with unique arrangements for violin and friends. A fresh take on timeless hits for fans old and new.",
       performers: ["Chelle Fulk", "Robert Raines"],
       trackCount: 9,
-      link: "https://chelle-fulk.square.site/product/2-do-beatles-by-chelle-fulk-and-robert-raines/1?cp=true&sa=true&sbp=false&q=false",
+      link: "https://chellefulk.square.site/product/2-do-beatles/20?cp=true&sa=false&sbp=false&q=false&category_id=2",
       samples: [
         {
           trackName: "The Fool On the Hill",
@@ -53,7 +53,7 @@ export const getRecordings = async (): Promise<RecordingDTO[]> => {
       description: "Keltish brings together the best of Celtic and folk traditions, featuring lively fiddle tunes, heartfelt ballads, and a fusion of world music influences. A musical journey across the British Isles and beyond.",
       performers: ["Chelle Fulk"],
       trackCount: 12,
-      link: "https://chelle-fulk.square.site/product/keltish-by-keltish/4?cp=true&sa=true&sbp=false&q=false",
+      link: "https://chellefulk.square.site/product/keltish/1?cp=true&sa=false&sbp=false&q=false&category_id=2",
       samples: [
         {
           trackName: "Dublin Lullaby",
@@ -80,7 +80,7 @@ export const getRecordings = async (): Promise<RecordingDTO[]> => {
       description: "Island Time is a collection of original and classic tunes with a tropical flair, blending violin, steel drums, and guitar for a relaxing, beachy vibe. Perfect for unwinding or bringing the island spirit to any occasion.",
       performers: ["Chelle Fulk", "Pete Kudelich"],
       trackCount: 10,
-      link: "https://chelle-fulk.square.site/product/island-time-by-chelle-fulk-and-peter-kudelich/5?cp=true&sa=true&sbp=false&q=false",
+      link: "https://chellefulk.square.site/product/island-time/19?cp=true&sa=false&sbp=false&q=false&category_id=2",
         samples: [
           { trackName: "Yell Yell", audioUrl: "/assets/recordings/islandTime/01 Yell Yell.mp3" },
           { trackName: "Carolina in the Morning", audioUrl: "/assets/recordings/islandTime/02 Carolina in the Morning.mp3" },
