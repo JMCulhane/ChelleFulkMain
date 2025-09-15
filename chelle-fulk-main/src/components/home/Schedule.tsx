@@ -45,7 +45,10 @@ const Schedule: React.FC = (): JSX.Element => {
               >
                 <div className="flex flex-col items-center justify-center font-fell text-base">
                   <p className="text-2xl whitespace-nowrap">{gig.date}</p>
-                  <p className="text-2xl">{gig.times}</p>
+                  <p className="text-2xl">
+                    {gig.startTime}
+                    {gig.endTime && gig.endTime.trim() !== '' ? ` - ${gig.endTime}` : ''}
+                  </p>
                 </div>
 
                 <div className="flex flex-col font-fell text-base">

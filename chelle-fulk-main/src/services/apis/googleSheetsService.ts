@@ -28,10 +28,12 @@ export async function retrieveGigData(): Promise<any[]> {
 
     const normalizedRows = normalizeKeys(rows);
 
+
     const formattedRows = normalizedRows.map(row => ({
       ...row,
       date: row.date ? convertGoogleSheetsDate(row.date) : '',
-      times: row.times ? convertGoogleSheetsTime(row.times) : '',
+      startTime: row.startTime ? convertGoogleSheetsTime(row.startTime) : '',
+      endTime: row.endTime ? convertGoogleSheetsTime(row.endTime) : '',
     }));
 
     return formattedRows;
