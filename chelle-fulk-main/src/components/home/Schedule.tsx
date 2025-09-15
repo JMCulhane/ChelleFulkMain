@@ -36,12 +36,12 @@ const Schedule: React.FC = (): JSX.Element => {
         <div className="overflow-hidden flex justify-center items-center ">
           <ul 
           role="list"
-          className="divide-y divide-white px-4 sm:px-6 md:px-8"
+          className="divide-y divide-white px-4 sm:px-6 md:px-8 overflow-y-auto"
           style={{ minHeight: '36rem', maxHeight: '36rem' }}>
             {currentGigs.map((gig, index) => (
               <li
                 key={`${start + index}`}
-                className="grid grid-cols-[200px_1fr_auto] items-start gap-x-6 py-5"
+                className="grid grid-cols-[260px_1fr_auto] items-start gap-x-6 py-5"
               >
                 <div className="flex flex-col items-center justify-center font-fell text-base">
                   <p className="text-2xl whitespace-nowrap">{gig.date}</p>
@@ -76,14 +76,16 @@ const Schedule: React.FC = (): JSX.Element => {
                 </div>
 
                 <div className="flex items-center h-full">
-                  <a
-                    href={gig.ticketsOrInfoLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-yellow-400/80 rounded-md px-3 py-2 text-sm font-medium font-fell text-xl hover:bg-yellow-400"
-                  >
-                    Info
-                  </a>
+                  {gig.ticketsOrInfoLink && gig.ticketsOrInfoLink.trim() !== '' && (
+                    <a
+                      href={gig.ticketsOrInfoLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-yellow-400/80 rounded-md px-3 py-2 text-sm font-medium font-fell text-xl hover:bg-yellow-400"
+                    >
+                      Info
+                    </a>
+                  )}
                 </div>
               </li>
             ))}
