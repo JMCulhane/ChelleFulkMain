@@ -212,7 +212,6 @@ const RecordingForm: React.FC<RecordingFormProps> = ({ onClose, onCancel, form, 
     });
 
     try {
-      console.log("Trying to submit the data.")
       await submitRecording(formData, true, credentials?.token); // true = isMultipart
       setStatus({ success: true, message: "Your recording has been successfully submitted." });
       dispatch({ type: "RESET" });

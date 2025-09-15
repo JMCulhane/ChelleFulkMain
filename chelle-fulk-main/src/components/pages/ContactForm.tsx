@@ -64,7 +64,7 @@ const ContactForm: React.FC = () => {
       );
 
       if (response.status === 200) {
-        setStatus({ success: true, message: "Your email has been successfully submitted." });
+        setStatus({ success: true, message: "Thank you for reaching out!  I'll get right back to you." });
         setForm({
           name: "",
           email: "",
@@ -86,11 +86,10 @@ const ContactForm: React.FC = () => {
 
     // === Backend API submission ===
     try {
-      console.log('Submitting contact form:', submission);
       const response = await submitContactForm(submission);
       // EmailJS returns an object with 'status' and 'text' properties
       if (response.status === 200) {
-        setStatus({ success: true, message: "Your email has been successfully submitted." });
+        setStatus({ success: true, message: "Thank you for reaching out!  I'll get right back to you." });
         setForm({
           name: "",
           email: "",
@@ -115,12 +114,6 @@ const ContactForm: React.FC = () => {
         <h1 className="text-4xl font-fell mb-6 border-b border-yellow-600 pb-2 tracking-wider">
           Contact Chelle
         </h1>
-
-        <p className="mb-5 leading-relaxed italic text-yellow-400">
-          To inquire about working with Chelle on a project, please reach out via our online contact form.
-          Please include as many details as possible, including dates, basic project
-          outline/summary, and estimated budget.
-        </p>
         <form
           onSubmit={handleSubmit}
           className="space-y-8 bg-gray-900 p-8 rounded-lg border border-yellow-700 shadow-inner"

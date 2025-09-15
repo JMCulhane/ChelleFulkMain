@@ -7,8 +7,7 @@ export function convertGoogleSheetsDate(dateString: string): string {
   const year = parseInt(yearStr, 10);
   const month = parseInt(monthStr, 10);
   const day = parseInt(dayStr, 10);
-
-  const date = new Date(Date.UTC(year, month, day));
+  const date = new Date(Date.UTC(year, month, day+1));
 
   return date.toLocaleDateString("en-US", {
     weekday: "short",
@@ -17,6 +16,7 @@ export function convertGoogleSheetsDate(dateString: string): string {
     year: "numeric",
   });
 }
+
 
 export function convertGoogleSheetsTime(timeString: string): string {
   // Handles strings like: Date(1899,11,30,21,0,0)

@@ -5,6 +5,7 @@ import ScaleOnScroll from "../styling/ScaleOnScroll";
 import { getSchedule } from "../../services/apis/scheduleService";
 import { MapPinIcon, MusicalNoteIcon } from "@heroicons/react/24/outline";
 import Spinner from "../errors/Spinner";
+import { data } from "react-router-dom";
 
 const GIGS_PER_PAGE = 5;
 
@@ -14,7 +15,6 @@ const Schedule: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     getSchedule().then((data) => {
-      console.log("Data is: ", data)
       setGigData(data as GigsDTO[]);
     });
   }, []);

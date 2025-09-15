@@ -30,7 +30,6 @@ export const submitContactForm = async (form: ContactFormDTO) => {
     subject: form.subject,
     message: `Hi, my name is ${form.name}\n\n${form.message}`
   };
-  console.log('[EmailJS] Sending templateParams:', templateParams);
 
   try {
     const response = await emailjs.send(
