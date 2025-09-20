@@ -13,6 +13,8 @@ export async function getSchedule(): Promise<any[]> {
     const response = await fetch(url);
     const text = await response.text();
 
+    // console.log("Text is: ", text)
+
     // Strip JSON wrapper
     const json = JSON.parse(text.substring(47, text.length - 2));
 
@@ -26,12 +28,16 @@ export async function getSchedule(): Promise<any[]> {
       return obj;
     });
 
+    // console.log("Rows are: ", rows)
     const normalizedRows = normalizeKeys(rows);
+    // console.log("Normalized rows are: ", normalizedRows)
+
 
     const formattedRows = normalizedRows.map(row => ({
       ...row,
       date: row.date ? convertGoogleSheetsDate(row.date) : '',
-      times: row.times ? convertGoogleSheetsTime(row.times) : '',
+      startTime: row.startTime ? convertGoogleSheetsTime(row.startTime) : '',
+      endTime: row.endTime ? convertGoogleSheetsTime(row.endTime) : '',
     }));
 
     return formattedRows;
