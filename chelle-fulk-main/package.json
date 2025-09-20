@@ -60,7 +60,14 @@
     "@types/three": "^0.178.1",
     "@types/webpack-env": "^1.18.8",
     "autoprefixer": "^10.4.21",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.6",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17"
-  }
+  },
+  "lint-staged": {
+  "*.{js,ts,jsx,tsx}": [
+    "sed -i.bak '/console\\.log/d' && rm -f *.bak"
+  ]
+}
 }
