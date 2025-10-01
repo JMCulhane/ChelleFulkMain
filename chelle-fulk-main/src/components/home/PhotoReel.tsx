@@ -14,7 +14,7 @@ const PhotoReel: React.FC<PhotoReelProps> = ({ reel }): JSX.Element => {
   const currentIndex: React.MutableRefObject<number> = useRef<number>(0);
   const intervalRef: React.MutableRefObject<number | null> = useRef<number | null>(null);
   const resizeTimeoutRef: React.MutableRefObject<number | null> = useRef<number | null>(null);
-  const slideInterval: number = 3000;
+  const slideInterval: number = 5000;
 
   const startCarousel = (): void => {
     const container: HTMLDivElement | null = containerRef.current;

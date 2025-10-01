@@ -6,7 +6,6 @@ import Foreword from "./Foreword";
 import Schedule from "./Schedule";
 import Portfolio from "./Portfolio";
 
-
 // Collect all reel images once
 const masterAlbum: string[] = require
   .context("../../../public/assets/reel", false, /\.(png|jpe?g|svg)$/)
@@ -17,7 +16,7 @@ const masterAlbum: string[] = require
 
   let photoReel: string[] = [];
 
-  const reelHeadLiner = '/assets/reelHeadliner/lashofs.jpg';
+  const reelHeadLiner = '/assets/reelHeadliner/P1080519.jpg';
   const reelLength = 5;
   photoReel.push(reelHeadLiner);
 
@@ -28,7 +27,6 @@ const masterAlbum: string[] = require
     const [selected] = masterAlbum.splice(randomIndex, 1);
     photoReel.push(selected);
   }
-
 
 const HomePage: React.FC = () => {
   const imagesLoaded = useImagePreloader(photoReel);
@@ -41,7 +39,10 @@ const HomePage: React.FC = () => {
     <>
       <PhotoReel reel={photoReel} />
       <Foreword />
-      <Schedule />
+      {/* Wrap Schedule in a section with id='schedule' for scroll targeting */}
+      <section id="schedule">
+        <Schedule />
+      </section>
       <Portfolio />
     </>
   );
