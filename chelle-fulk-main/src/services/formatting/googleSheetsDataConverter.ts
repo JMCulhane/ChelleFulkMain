@@ -1,5 +1,4 @@
 export function convertGoogleSheetsDate(dateString: string): string {
-  console.log("Start of convertgooglesheetdata")
   // Handles strings like: Date(2025,6,4)
   const match = /Date\((\d+),(\d+),(\d+)\)/.exec(dateString);
   if (!match) return "Invalid Date";
