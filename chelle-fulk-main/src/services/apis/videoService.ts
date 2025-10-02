@@ -28,27 +28,27 @@ export const getVideos = async () => {
   return [
     {
       id: 1,
+      title: "Percussion and Violin - Sampler reel; Tom Teasley, Chelle Fulk",
+      thumbnail: "https://img.youtube.com/vi/kNK10pnNKUY/hqdefault.jpg",
+      embedId: "kNK10pnNKUY"
+    },
+    {
+      id: 2,
       title: "Two Fiddle Tunes",
       thumbnail: "https://img.youtube.com/vi/fOxnJQsSRaA/hqdefault.jpg",
       embedId: "fOxnJQsSRaA"
     },
     {
-      id: 2,
+      id: 3,
       title: "Im a Believer",
       thumbnail: "https://img.youtube.com/vi/XMJJsnUIxQM/hqdefault.jpg",
       embedId: "XMJJsnUIxQM"
     },
     {
-      id: 3,
+      id: 4,
       title: "Anthem Electric Violin and Cello",
       thumbnail: "https://img.youtube.com/vi/C-OkCsUhpE4/hqdefault.jpg",
       embedId: "C-OkCsUhpE4"
-    },
-    {
-      id: 4,
-      title: "Tom Teasley Percussion, Chelle Fulk Violin",
-      thumbnail: "https://img.youtube.com/vi/609TvV1iT0A/hqdefault.jpg",
-      embedId: "609TvV1iT0A"
     },
     {
       id: 5,
@@ -64,16 +64,16 @@ export const getVideos = async () => {
     },
     {
       id: 7,
-      title: "Red Haired Boy",
-      thumbnail: "https://img.youtube.com/vi/BRLZ1PbJegk/hqdefault.jpg",
-      embedId: "BRLZ1PbJegk"
-    },
-    {
-      id: 8,
       title: "Here Comes the Sun",
       thumbnail: "https://img.youtube.com/vi/JN_iBLdzju8/hqdefault.jpg",
       embedId: "JN_iBLdzju8"
-    }
+    },
+    {
+      id: 8,
+      title: "Hardanger d'Amore and Cicadas - Emergence; Chelle Fulk, Cicada choir",
+      thumbnail: "https://img.youtube.com/vi/7qopMvCLVpw/hqdefault.jpg",
+      embedId: "7qopMvCLVpw"
+    },
   ];
 };
 
