@@ -11,7 +11,7 @@ const Foreword: React.FC = (): JSX.Element => {
   return (
   <div id="foreword" className="min-h-[60vh] pt-8 w-screen">
       <div className="relative mb-2 w-full flex items-center justify-center">
-        <button
+        {/* <button
           type="button"
           onClick={() => {
             const section2 = document.getElementById("schedule");
@@ -26,7 +26,7 @@ const Foreword: React.FC = (): JSX.Element => {
           style={{ fontWeight: 'bold' }}
         >
           Schedule
-        </button>
+        </button> */}
         <div className="mx-auto">
           <Title text={title} />
         </div>

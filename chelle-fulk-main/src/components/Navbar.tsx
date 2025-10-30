@@ -1,6 +1,6 @@
 import { JSX, useEffect, useState } from "react";
-import { Disclosure, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
-import { Link, useLocation } from "react-router-dom";
+import { Disclosure, Menu, MenuItem, MenuItems } from "@headlessui/react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 type NavItem = {
   name: string;
@@ -9,32 +9,43 @@ type NavItem = {
 };
 
 const initialNavigation: NavItem[] = [
-  { name: 'Home', href: '/', current: true },
-  { name: 'Videos', href: '/videos', current: false },
-  { name: 'Recordings', href: '/recordings', current: false },
-  { name: 'Contact', href: '/contact', current: false }
+  { name: "Home", href: "/", current: true },
+  { name: "Schedule", href: "/", current: true },
+  { name: "Videos", href: "/videos", current: false },
+  { name: "Recordings", href: "/recordings", current: false },
+  { name: "Contact", href: "/contact", current: false },
 ];
 
 function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(" ");
 }
 
 const Navbar: React.FC = (): JSX.Element => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [navigation, setNavigation] = useState<NavItem[]>(initialNavigation);
 
   useEffect(() => {
-    setNavigation(prev =>
-      prev.map(item => {
-        // Default to Home for root path
-        if (location.pathname === '/' && item.name === 'Home') {
+    setNavigation((prev) =>
+      prev.map((item) => {
+        if (location.pathname === "/" && item.name === "Home") {
           return { ...item, current: true };
         }
-        // Otherwise, match by href
-        return { ...item, current: location.pathname.startsWith(item.href) && item.href !== '/' };
+        return {
+          ...item,
+          current: location.pathname.startsWith(item.href) && item.href !== "/",
+        };
       })
     );
   }, [location.pathname]);
+
+  const handleNavClick = (href: string, name: string) => {
+    if(name === "Schedule") {
+      navigate(href,{ state: { scrollTo: "schedule" } })
+      return;
+    }
+    navigate(href,{ state: null });
+  };
 
   return (
     <Disclosure as="nav" className="bg-black">
@@ -43,32 +54,25 @@ const Navbar: React.FC = (): JSX.Element => {
           <div className="flex flex-1 justify-center">
             <div className="flex space-x-8">
               {navigation.map((item) => (
-                <Link
+                <button
                   key={item.name}
-                  to={item.href}
-                  aria-current={item.current ? 'page' : undefined}
+                  onClick={() => handleNavClick(item.href,item.name)}
+                  aria-current={item.current ? "page" : undefined}
                   className={classNames(
                     item.current
-                      ? 'bg-yellow-400'
-                      : 'text-neutral-50 hover:bg-yellow-400/80',
-                    'rounded-md px-3 py-2 text-sm font-medium',
-                    'font-fell',
-                    'text-xl'
+                      ? "bg-yellow-400"
+                      : "text-neutral-50 hover:bg-yellow-400/80",
+                    "rounded-md px-3 py-2 text-sm font-medium font-fell text-xl"
                   )}
                 >
                   {item.name}
-                </Link>
+                </button>
               ))}
             </div>
           </div>
 
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <Menu as="div" className="relative">
-              {/* <MenuButton
-                className="rounded-md px-3 py-2 text-sm font-medium text-neutral-50 hover:bg-yellow-400/80 font-fell text-xl"
-              >
-                Projects
-              </MenuButton> */}
               <MenuItems
                 transition
                 className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 transition focus:outline-none"

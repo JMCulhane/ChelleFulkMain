@@ -5,7 +5,6 @@ import ScaleOnScroll from "../styling/ScaleOnScroll";
 import { getSchedule } from "../../services/apis/scheduleService";
 import { MapPinIcon, MusicalNoteIcon } from "@heroicons/react/24/outline";
 import Spinner from "../errors/Spinner";
-import { data } from "react-router-dom";
 
 const GIGS_PER_PAGE = 5;
 

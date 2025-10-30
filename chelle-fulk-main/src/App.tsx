@@ -9,6 +9,7 @@ import KnotBackground from './components/styling/KnotBackground';
 import Recordings from './components/pages/Recordings';
 import HomePage from './components/home/HomePage';
 import Videos from './components/pages/Videos';
+import ScrollProgressBar from './components/styling/ScrollProgressBar';
 
 function App() {
 
@@ -18,7 +19,7 @@ function App() {
     setTrigger(true);
     setTimeout(() => setTrigger(false), 3000); // effect lasts 3s
   };
-  
+
   return (
     <AdminAuthProvider>
       <Router>
@@ -40,6 +41,7 @@ function App() {
               <Route path="/recordings" element={<Recordings />} />
               
                 <Route path="/admin" element={<AdminPage />} />
+              {/* <Route path="/scrollProgressBar" element={<ScrollProgressBar />} /> */}
              
             </Routes>
             <>
