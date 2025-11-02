@@ -25,7 +25,7 @@ const Foreword: React.FC = (): JSX.Element => {
           </div>
           <div className="flex-[2] flex justify-center px-4">
             <p className="text-center max-w-xl text-white">
-              Chelle Fulk, the owner and Chief Visionary at Music by Anthem, is a versatile violinist, violist, and vocalist. Her talent and professionalism can be found on stage or in the studio with Celtic, jazz, pop and rock bands, classical string trios and quartets, ballroom dance ensembles and more. Besides playing fiddle and electric violin with her own Celtic band, Keltish, she performs with the Anthem Electric String Quartet, Christylez Bacon, the Wytold Ensemble, Coyote Run, the DanceTet, and several folk-dance groups. When not performing, she loves epic hiking and biking adventures all over the world. Sometimes the fiddle comes along for the ride.
+              Chelle Fulk, owner and Chief Visionary at Music by Anthem, is a versatile violinist, violist, and vocalist. Her talent and professionalism can be found on stage or in the studio with Celtic, jazz, pop and rock bands, classical string trios and quartets, ballroom dance ensembles and more. Besides playing fiddle and electric violin with her own Celtic band, Keltish, she performs with the Anthem Electric String Quartet, Christylez Bacon, the Wytold Ensemble, Coyote Run, the DanceTet, and several folk-dance groups. When not performing, she loves epic hiking and biking adventures all over the world. Sometimes the fiddle comes along for the ride.
             </p>
           </div>
           <div className="flex-1 flex justify-center">
