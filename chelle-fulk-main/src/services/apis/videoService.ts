@@ -34,37 +34,37 @@ export const getVideos = async () => {
     },
     {
       id: 2,
-      title: "Two Fiddle Tunes",
+      title: "Solo fiddle - two Celtic tunes Chelle Fulk",
       thumbnail: "https://img.youtube.com/vi/fOxnJQsSRaA/hqdefault.jpg",
       embedId: "fOxnJQsSRaA"
     },
     {
       id: 3,
-      title: "Im a Believer",
+      title: "Anthem String Trio - I'm a Believer Janet Greene, Kristen Jones, Chelle Fulk",
       thumbnail: "https://img.youtube.com/vi/XMJJsnUIxQM/hqdefault.jpg",
       embedId: "XMJJsnUIxQM"
     },
     {
       id: 4,
-      title: "Anthem Electric Violin and Cello",
+      title: "Electric Violin & Cello - sampler reel Kristen Jones, Chelle Fulk",
       thumbnail: "https://img.youtube.com/vi/C-OkCsUhpE4/hqdefault.jpg",
       embedId: "C-OkCsUhpE4"
     },
     {
       id: 5,
-      title: "The Kiss from Last of the Mohicans",
+      title: "Anthem String Trio - The Kiss Janet Greene, Kristen Jones, Chelle Fulk",
       thumbnail: "https://img.youtube.com/vi/4zvSnvMHMio/hqdefault.jpg",
       embedId: "4zvSnvMHMio"
     },
     {
       id: 6,
-      title: "Catnip Fling Sampler",
+      title: "Catnip Fling Celtic Trio - sampler reel Jody Marshall, Kristen Jones, Chelle Fulk",
       thumbnail: "https://img.youtube.com/vi/Lo1s3xsWiu8/hqdefault.jpg",
       embedId: "Lo1s3xsWiu8"
     },
     {
       id: 7,
-      title: "Here Comes the Sun",
+      title: "Anthem Electric Quartet - Here Comes the Sun Janet Greene, Kristen Jones, Caroline Little, Chelle Fulk",
       thumbnail: "https://img.youtube.com/vi/JN_iBLdzju8/hqdefault.jpg",
       embedId: "JN_iBLdzju8"
     },

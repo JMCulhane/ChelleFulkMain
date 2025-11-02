@@ -1,8 +1,7 @@
 
-import React, { useState, FormEvent } from "react";
+import React, { useState, FormEvent, useRef, useEffect } from "react";
 import Spinner from "../errors/Spinner";
 import { submitContactForm } from '../../services/apis/contactFormService';
-import emailjs from 'emailjs-com';
 import PaddingWrapper from "../styling/PaddingWrapper";
 import { ContactFormDTO } from '../../models/ContactFormDTO';
 import ScaleOnScroll from "../styling/ScaleOnScroll";
@@ -27,6 +26,21 @@ const ContactForm: React.FC = () => {
 
   const [status, setStatus] = useState<{ success: boolean; message: string } | null>(null);
   const [loading, setLoading] = useState(false);
+  const [shouldFadeOut, setShouldFadeOut] = useState(false);
+  const [showSuccessFadeIn, setShowSuccessFadeIn] = useState(false);
+  const statusRef = useRef<HTMLDivElement>(null);
+  const submitButtonRef = useRef<HTMLDivElement>(null);
+  const spinnerRef = useRef<HTMLSpanElement>(null);
+
+  // Scroll to status message when it appears
+  useEffect(() => {
+    if (status && statusRef.current) {
+      statusRef.current.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'center' 
+      });
+    }
+  }, [status]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -40,6 +54,15 @@ const ContactForm: React.FC = () => {
     }
 
     setLoading(true);
+    // Immediately scroll to the Spinner to show loading state
+    setTimeout(() => {
+      if (spinnerRef.current) {
+        spinnerRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        });
+      }
+    }, 0);
     const submission: ContactFormDTO = {
       ...form
     };
@@ -87,141 +110,160 @@ const ContactForm: React.FC = () => {
 
     // === Backend API submission ===
     try {
+      // Simulate API delay for testing purposes
+      await new Promise(resolve => setTimeout(resolve, 2000));
       const response = await submitContactForm(submission);
-      // EmailJS returns an object with 'status' and 'text' properties
       if (response.status === 200) {
-        setStatus({ success: true, message: "Thank you for reaching out!  I'll get right back to you." });
-        setForm({
-          name: "",
-          email: "",
-          subject: "",
-          message: ""
-        });
+        setShouldFadeOut(true); // Fade out immediately after success
+        setTimeout(() => {
+          setForm({
+            name: "",
+            email: "",
+            subject: "",
+            message: ""
+          });
+          setStatus({ success: true, message: "Thank you for reaching out!  I'll get right back to you." });
+          setShowSuccessFadeIn(true); // Show success message after fade-out
+        }, 1000); // Reset form and trigger fade-in after fade-out completes
       } else {
         setStatus({ success: false, message: response.text || "There was an error sending your message. Please try again later." });
       }
     } catch (error) {
-  console.error('Error sending contact form:', error);
-  const errMsg = (error as any)?.message || "There was an error sending your message. Please try again later.";
-  setStatus({ success: false, message: errMsg });
+      console.error('Error sending contact form:', error);
+      const errMsg = (error as any)?.message || "There was an error sending your message. Please try again later.";
+      setStatus({ success: false, message: errMsg });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <ScaleOnScroll>
-      <PaddingWrapper basePadding="pt-32 p-4" smPadding="sm:pt-36 sm:p-6" mdPadding="md:pt-28 md:p-8">
-        <div className="max-w-3xl mx-auto p-8 bg-black rounded-lg shadow-lg font-serif text-yellow-300">
-          <h1 className="text-4xl font-fell mb-6 border-b border-yellow-600 pb-2 tracking-wider">
-            Contact Chelle
-          </h1>
-          <form
-            onSubmit={handleSubmit}
-            className="space-y-8 bg-gray-900 p-8 rounded-lg border border-yellow-700 shadow-inner"
-          >
-            <div>
-              <label
-                htmlFor="name"
-                className="block mb-1 font-fell tracking-wide text-yellow-300"
-              >
-                Name <span className="text-yellow-600">*</span>
-              </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                value={form.name}
-                onChange={handleInputChange}
-                required
-                className="w-full border border-yellow-700 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600 bg-black text-yellow-300 placeholder-yellow-600"
-                placeholder="Your name"
-                disabled={loading}
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="email"
-                className="block mb-1 font-fell tracking-wide text-yellow-300"
-              >
-                Email <span className="text-yellow-600">*</span>
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                value={form.email}
-                onChange={handleInputChange}
-                required
-                className="w-full border border-yellow-700 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600 bg-black text-yellow-300 placeholder-yellow-600"
-                placeholder="your.email@example.com"
-                disabled={loading}
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="subject"
-                className="block mb-1 font-fell tracking-wide text-yellow-300"
-              >
-                Subject <span className="text-yellow-600">*</span>
-              </label>
-              <input
-                id="subject"
-                name="subject"
-                type="text"
-                value={form.subject}
-                onChange={handleInputChange}
-                required
-                className="w-full border border-yellow-700 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600 bg-black text-yellow-300 placeholder-yellow-600"
-                placeholder="Subject of your inquiry"
-                disabled={loading}
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="message"
-                className="block mb-1 font-fell tracking-wide text-yellow-300"
-              >
-                Message <span className="text-yellow-600">*</span>
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                rows={6}
-                value={form.message}
-                onChange={handleInputChange}
-                required
-                className="w-full border border-yellow-700 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600 bg-black text-yellow-300 placeholder-yellow-600 resize-none"
-                placeholder="Write your inquiry here"
-                disabled={loading}
-              />
-            </div>
-
-            <div className="flex items-center gap-4">
-              <button
-                type="submit"
-                className="text-neutral-50 bg-yellow-400 hover:bg-yellow-400/80 rounded-md px-3 py-2 text-sm font-medium font-fell text-xl transition"
-                disabled={loading}
-              >
-                {loading ? "Sending..." : "Send Mail"}
-              </button>
-              {loading && (
-                <Spinner size={32} />
-              )}
-            </div>
-          </form>
-          {status && (
-            <div className={`mt-6 text-lg font-semibold ${status.success ? 'text-green-400' : 'text-red-400'}`}
-                role="alert">
+    <>
+    {/* Conditionally render success message after form fade-out */}
+    {showSuccessFadeIn && status && status.success && (
+      <ScaleOnScroll>
+        <PaddingWrapper basePadding="pt-32 p-4" smPadding="sm:pt-36 sm:p-6" mdPadding="md:pt-28 md:p-8">
+          <div className="flex items-center justify-center">
+            <div ref={statusRef} className={"mt-6 text-lg font-serif text-green-400"} role="alert">
               {status.message}
             </div>
-          )}
-        </div>
-      </PaddingWrapper>
-    </ScaleOnScroll>
+          </div>
+        </PaddingWrapper>
+      </ScaleOnScroll>
+    )}
+    {/* Form block with fade-out */}
+    {!showSuccessFadeIn && (
+      <ScaleOnScroll triggerFadeOut={shouldFadeOut}>
+        <PaddingWrapper basePadding="pt-32 p-4" smPadding="sm:pt-36 sm:p-6" mdPadding="md:pt-28 md:p-8">
+          <div className="max-w-3xl mx-auto p-8 bg-black rounded-lg shadow-lg font-serif text-yellow-300">
+            <h1 className="text-4xl font-fell mb-6 border-b border-yellow-600 pb-2 tracking-wider">
+              Contact Chelle
+            </h1>
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-8 bg-gray-900 p-8 rounded-lg border border-yellow-700 shadow-inner"
+            >
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block mb-1 font-fell tracking-wide text-yellow-300"
+                >
+                  Name <span className="text-yellow-600">*</span>
+                </label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  value={form.name}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full border border-yellow-700 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600 bg-black text-yellow-300"
+                  disabled={loading}
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block mb-1 font-fell tracking-wide text-yellow-300"
+                >
+                  Email <span className="text-yellow-600">*</span>
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={form.email}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full border border-yellow-700 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600 bg-black text-yellow-300"
+                  disabled={loading}
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="subject"
+                  className="block mb-1 font-fell tracking-wide text-yellow-300"
+                >
+                  Subject <span className="text-yellow-600">*</span>
+                </label>
+                <input
+                  id="subject"
+                  name="subject"
+                  type="text"
+                  value={form.subject}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full border border-yellow-700 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600 bg-black text-yellow-300"
+                  disabled={loading}
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="message"
+                  className="block mb-1 font-fell tracking-wide text-yellow-300"
+                >
+                  Message <span className="text-yellow-600">*</span>
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows={6}
+                  value={form.message}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full border border-yellow-700 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600 bg-black text-yellow-300 resize-none"
+                  disabled={loading}
+                />
+              </div>
+
+              <div ref={submitButtonRef} className="flex items-center gap-4">
+                <button
+                  type="submit"
+                  className="text-neutral-50 bg-yellow-400 hover:bg-yellow-400/80 rounded-md px-3 py-2 text-sm font-medium font-fell text-xl transition"
+                  disabled={loading}
+                >
+                  {loading ? "Sending..." : "Send Mail"}
+                </button>
+                {loading && (
+                  <span ref={spinnerRef}>
+                    <Spinner size={32} />
+                  </span>
+                )}
+              </div>
+            </form>
+            {status && !status.success && (
+              <div ref={statusRef} className={`mt-6 text-lg font-semibold text-red-400`} role="alert">
+                {status.message}
+              </div>
+            )}
+          </div>
+        </PaddingWrapper>
+      </ScaleOnScroll>
+    )}
+    </>
   );
 };
 

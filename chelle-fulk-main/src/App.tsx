@@ -9,7 +9,6 @@ import KnotBackground from './components/styling/KnotBackground';
 import Recordings from './components/pages/Recordings';
 import HomePage from './components/home/HomePage';
 import Videos from './components/pages/Videos';
-import ScrollProgressBar from './components/styling/ScrollProgressBar';
 
 function App() {
 
@@ -41,7 +40,6 @@ function App() {
               <Route path="/recordings" element={<Recordings />} />
               
                 <Route path="/admin" element={<AdminPage />} />
-              {/* <Route path="/scrollProgressBar" element={<ScrollProgressBar />} /> */}
              
             </Routes>
             <>

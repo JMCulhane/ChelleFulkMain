@@ -11,22 +11,6 @@ const Foreword: React.FC = (): JSX.Element => {
   return (
   <div id="foreword" className="min-h-[60vh] pt-8 w-screen">
       <div className="relative mb-2 w-full flex items-center justify-center">
-        {/* <button
-          type="button"
-          onClick={() => {
-            const section2 = document.getElementById("schedule");
-            if (section2) {
-              const yOffset = -80; // adjust this value as needed for your header height
-              const y = section2.getBoundingClientRect().top + window.pageYOffset + yOffset;
-              window.scrollTo({ top: y, behavior: "smooth" });
-            }
-          }}
-          className={`sm:absolute sm:left-8 px-6 py-3 mx-6 border-2 flex items-center justify-center text-lg font-bold font-fell transition-colors duration-300
-            bg-black border-white text-white hover:bg-yellow-400 hover:text-gray-900 focus:outline-none focus:ring-2 shadow-lg`}
-          style={{ fontWeight: 'bold' }}
-        >
-          Schedule
-        </button> */}
         <div className="mx-auto">
           <Title text={title} />
         </div>
