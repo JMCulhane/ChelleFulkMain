@@ -18,7 +18,7 @@ function App() {
     setTrigger(true);
     setTimeout(() => setTrigger(false), 3000); // effect lasts 3s
   };
-  
+
   return (
     <AdminAuthProvider>
       <Router>
