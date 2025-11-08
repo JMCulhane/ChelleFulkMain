@@ -39,3 +39,15 @@ jobs:
           port: 21
           local-dir: chelle-fulk-main/build/
           server-dir: chellefulk.com/public_html/
+          timeout: 30000          # 30 second timeout
+          passive: true           # Better connection handling
+          log-level: verbose      # See what's happening
+
+      - name: Explicit FTP Connection Close
+        if: always()              # Run even if FTP step fails
+        run: |
+          echo "Forcing any lingering FTP connections to timeout..."
+          # Kill any processes that might be holding FTP connections
+          pkill -f "ftp" || echo "No FTP processes found"
+          sleep 10
+          echo "FTP connection cleanup complete"
