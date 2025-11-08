@@ -7,6 +7,7 @@ import { useAdminAuth } from '../../context/AdminAuthContext';
 export const initialState: VideoDTO = {
   id: 0,
   title: "",
+  accompanyment: "",
   thumbnail: "",
   embedId: ""
 };
