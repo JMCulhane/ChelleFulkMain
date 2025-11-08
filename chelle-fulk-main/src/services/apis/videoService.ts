@@ -28,49 +28,57 @@ export const getVideos = async () => {
   return [
     {
       id: 1,
-      title: "Percussion and Violin - Sampler reel; Tom Teasley, Chelle Fulk",
+      title: "Percussion and Violin - Sampler reel",
+      accompanyment: "Tom Teasley, Chelle Fulk",
       thumbnail: "https://img.youtube.com/vi/kNK10pnNKUY/hqdefault.jpg",
       embedId: "kNK10pnNKUY"
     },
     {
       id: 2,
-      title: "Solo fiddle - two Celtic tunes; Chelle Fulk",
+      title: "Solo fiddle - two Celtic tunes",
+      accompanyment: "Chelle Fulk",
       thumbnail: "https://img.youtube.com/vi/fOxnJQsSRaA/hqdefault.jpg",
       embedId: "fOxnJQsSRaA"
     },
     {
       id: 3,
-      title: "Anthem String Trio - I'm a Believer; Janet Greene, Kristen Jones, Chelle Fulk",
+      title: "Anthem String Trio - I'm a Believer",
+      accompanyment: "Janet Greene, Kristen Jones, Chelle Fulk",
       thumbnail: "https://img.youtube.com/vi/XMJJsnUIxQM/hqdefault.jpg",
       embedId: "XMJJsnUIxQM"
     },
     {
       id: 4,
-      title: "Electric Violin & Cello - sampler reel; Kristen Jones, Chelle Fulk",
+      title: "Electric Violin & Cello - sampler reel",
+      accompanyment: "Kristen Jones, Chelle Fulk",
       thumbnail: "https://img.youtube.com/vi/C-OkCsUhpE4/hqdefault.jpg",
       embedId: "C-OkCsUhpE4"
     },
     {
       id: 5,
-      title: "Anthem String Trio - The Kiss; Janet Greene, Kristen Jones, Chelle Fulk",
+      title: "Anthem String Trio - The Kiss",
+      accompanyment: "Janet Greene, Kristen Jones, Chelle Fulk",
       thumbnail: "https://img.youtube.com/vi/4zvSnvMHMio/hqdefault.jpg",
       embedId: "4zvSnvMHMio"
     },
     {
       id: 6,
-      title: "Catnip Fling Celtic Trio - sampler reel; Jody Marshall, Kristen Jones, Chelle Fulk",
+      title: "Catnip Fling Celtic Trio - sampler reel",
+      accompanyment: "Jody Marshall, Kristen Jones, Chelle Fulk",
       thumbnail: "https://img.youtube.com/vi/Lo1s3xsWiu8/hqdefault.jpg",
       embedId: "Lo1s3xsWiu8"
     },
     {
       id: 7,
-      title: "Anthem Electric Quartet - Here Comes the Sun; Janet Greene, Kristen Jones, Caroline Little, Chelle Fulk",
+      title: "Anthem Electric Quartet - Here Comes the Sun",
+      accompanyment: "Janet Greene, Kristen Jones, Caroline Little, Chelle Fulk",
       thumbnail: "https://img.youtube.com/vi/JN_iBLdzju8/hqdefault.jpg",
       embedId: "JN_iBLdzju8"
     },
     {
       id: 8,
-      title: "Hardanger d'Amore and Cicadas - Emergence; Chelle Fulk, Cicada choir",
+      title: "Hardanger d'Amore and Cicadas - Emergence",
+      accompanyment: "Chelle Fulk, Cicada choir",
       thumbnail: "https://img.youtube.com/vi/7qopMvCLVpw/hqdefault.jpg",
       embedId: "7qopMvCLVpw"
     },

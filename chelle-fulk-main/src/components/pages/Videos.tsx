@@ -5,7 +5,7 @@ import { initialState as videoInitialState, ValidationErrors as VideoValidationE
 // import { getVideos, deleteVideo } from '../../services/apis/videoService';
 // Backend video service calls are commented out because backend is not available on static hosting.
 import VideoForm from '../forms/VideoForm';
-import { PlayIcon, TrashIcon } from '@heroicons/react/24/solid';
+import { MusicalNoteIcon, PlayIcon, TrashIcon } from '@heroicons/react/24/solid';
 import PaddingWrapper from '../styling/PaddingWrapper';
 import { VideoDTO } from '../../models/VideoDTO';
 import { deleteVideo, getVideos } from '../../services/apis/videoService';
@@ -197,6 +197,15 @@ const Videos = () => {
                       <h3 className="text-lg font-fell text-yellow-300 leading-tight group-hover:text-yellow-400 transition-colors duration-200">
                         {video.title}
                       </h3>
+                    </div>
+                    <div className="pt-3">
+                      <p className="flex items-center font-fell gap-x-2 text-base mt-1" style={{ lineHeight: 1 }}>
+                        <MusicalNoteIcon
+                          className="h-5 w-5 text-yellow-400 flex-shrink-0"
+                          aria-hidden="true"
+                        />
+                        {video?.accompanyment}
+                      </p>
                     </div>
                   </div>
                 ))}
