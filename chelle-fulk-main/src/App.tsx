@@ -9,6 +9,7 @@ import KnotBackground from './components/styling/KnotBackground';
 import Recordings from './components/pages/Recordings';
 import HomePage from './components/home/HomePage';
 import Videos from './components/pages/Videos';
+import DbConnectionTest from './components/DbConnectionTest';
 
 function App() {
 
@@ -38,6 +39,7 @@ function App() {
               <Route path="/contact" element={<ContactForm />} />
               <Route path="/videos" element={<Videos />} />
               <Route path="/recordings" element={<Recordings />} />
+              <Route path="dbtest" element={<DbConnectionTest />} />
               
                 <Route path="/admin" element={<AdminPage />} />
              

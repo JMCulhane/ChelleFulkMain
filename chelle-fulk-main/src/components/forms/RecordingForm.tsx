@@ -1,6 +1,6 @@
 import React, { useReducer, useState, FormEvent, useEffect } from "react";
 import Spinner from "../errors/Spinner";
-import { submitRecording } from '../../services/apis/recordingService';
+import { submitRecording, updateRecording } from '../../services/apis/recordingService';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 
 interface SampleDTO {
@@ -102,9 +102,11 @@ interface RecordingFormProps {
   dispatch: React.Dispatch<Action>;
   errors: ValidationErrors;
   setErrors: React.Dispatch<React.SetStateAction<ValidationErrors>>;
+  editMode?: boolean;
+  editId?: number | string;
 }
 
-const RecordingForm: React.FC<RecordingFormProps> = ({ onClose, onCancel, form, dispatch, errors, setErrors }) => {
+const RecordingForm: React.FC<RecordingFormProps> = ({ onClose, onCancel, form, dispatch, errors, setErrors, editMode = false, editId }) => {
   const { credentials } = useAdminAuth();
 
   // File state for image and audio samples
@@ -195,10 +197,12 @@ const RecordingForm: React.FC<RecordingFormProps> = ({ onClose, onCancel, form, 
     formData.append("description", form.description);
     formData.append("trackCount", String(form.trackCount));
     formData.append("link", form.link);
-    form.performers.forEach((p, i) => formData.append(`performers[${i}]`, p));
+    // Send performers and samples as JSON strings for backend compatibility
+    formData.append("performers", JSON.stringify(form.performers));
+    formData.append("samples", JSON.stringify(form.samples));
     // Image file
     if (imageFile) {
-      formData.append("imageFile", imageFile);
+      formData.append("image", imageFile);
     }
     // Audio sample files
     audioFiles.forEach((file, i) => {
@@ -206,18 +210,19 @@ const RecordingForm: React.FC<RecordingFormProps> = ({ onClose, onCancel, form, 
         formData.append(`audioFiles[${i}]`, file);
       }
     });
-    // Sample meta
-    form.samples.forEach((sample, i) => {
-      formData.append(`samples[${i}][trackName]`, sample.trackName);
-    });
 
     try {
-      await submitRecording(formData, true, credentials?.token); // true = isMultipart
-      setStatus({ success: true, message: "Your recording has been successfully submitted." });
+      if (editMode && editId !== undefined && editId !== null) {
+        await updateRecording(editId, formData, credentials?.token);
+        setStatus({ success: true, message: "Your recording has been successfully updated." });
+      } else {
+        await submitRecording(formData, credentials?.token);
+        setStatus({ success: true, message: "Your recording has been successfully submitted." });
+      }
       dispatch({ type: "RESET" });
       onClose();
     } catch (error: any) {
-      setStatus({ success: false, message: error.message || "Failed to submit recording." });
+      setStatus({ success: false, message: error.message || (editMode ? "Failed to update recording." : "Failed to submit recording.") });
     } finally {
       setLoading(false);
     }
@@ -240,7 +245,7 @@ const RecordingForm: React.FC<RecordingFormProps> = ({ onClose, onCancel, form, 
         onClick={e => e.stopPropagation()}
       >
         <h2 className="text-4xl mb-6 border-b border-yellow-600 pb-2 tracking-wider font-fell">
-          Add New Recording
+          {editMode ? "Edit Recording" : "Add New Recording"}
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-8 bg-gray-900 p-8 rounded-lg border border-yellow-700 shadow-inner" noValidate>
@@ -280,7 +285,6 @@ const RecordingForm: React.FC<RecordingFormProps> = ({ onClose, onCancel, form, 
               }
               className={`w-full border rounded-md px-4 py-3 focus:outline-none focus:ring-2 bg-black text-yellow-300 placeholder-yellow-600
                 ${errors.title ? "border-red-600 focus:ring-red-600" : "border-yellow-700 focus:ring-yellow-600"}`}
-              placeholder="Recording Title"
               required
             />
             {errors.title && <p className="text-red-600 mt-1 text-sm">{errors.title}</p>}
@@ -325,7 +329,6 @@ const RecordingForm: React.FC<RecordingFormProps> = ({ onClose, onCancel, form, 
                 dispatch({ type: "SET_FIELD", field: "description", value: e.target.value })
               }
               className="w-full border border-yellow-700 rounded-md px-4 py-3 focus:outline-none focus:ring-2 bg-black text-yellow-300 placeholder-yellow-600 resize-none"
-              placeholder="Brief description"
             />
           </div>
 
@@ -346,7 +349,6 @@ const RecordingForm: React.FC<RecordingFormProps> = ({ onClose, onCancel, form, 
                         ? "border-red-600 focus:ring-red-600"
                         : "border-yellow-700 focus:ring-yellow-600"
                     }`}
-                  placeholder={`Performer ${i + 1}`}
                 />
                 {form.performers.length > 1 && (
                   <button
@@ -408,7 +410,6 @@ const RecordingForm: React.FC<RecordingFormProps> = ({ onClose, onCancel, form, 
                 dispatch({ type: "SET_FIELD", field: "link", value: e.target.value })
               }
               className="w-full border border-yellow-700 rounded-md px-4 py-3 focus:outline-none focus:ring-2 bg-black text-yellow-300 placeholder-yellow-600"
-              placeholder="https://example.com"
             />
           </div>
 
@@ -423,7 +424,6 @@ const RecordingForm: React.FC<RecordingFormProps> = ({ onClose, onCancel, form, 
                 <div className="flex flex-col gap-2">
                   <input
                     type="text"
-                    placeholder="Track Name"
                     value={sample.trackName}
                     onChange={(e) =>
                       dispatch({
@@ -510,10 +510,10 @@ const RecordingForm: React.FC<RecordingFormProps> = ({ onClose, onCancel, form, 
             </button>
             <button
               type="submit"
-              className="bg-yellow-400 hover:bg-yellow-500 px-6 py-2 rounded font-fell font-bold"
+              className="bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-2 rounded font-fell font-bold"
               disabled={loading}
             >
-              {loading ? "Saving..." : "Save Recording"}
+              {loading ? (editMode ? "Saving..." : "Saving...") : (editMode ? "Update Recording" : "Save Recording")}
             </button>
             {loading && <Spinner size={28} />}
           </div>

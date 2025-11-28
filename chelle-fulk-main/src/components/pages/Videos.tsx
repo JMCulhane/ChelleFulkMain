@@ -5,7 +5,7 @@ import { initialState as videoInitialState, ValidationErrors as VideoValidationE
 // import { getVideos, deleteVideo } from '../../services/apis/videoService';
 // Backend video service calls are commented out because backend is not available on static hosting.
 import VideoForm from '../forms/VideoForm';
-import { MusicalNoteIcon, PlayIcon, TrashIcon } from '@heroicons/react/24/solid';
+import { PlayIcon, TrashIcon, PencilIcon } from '@heroicons/react/24/solid';
 import PaddingWrapper from '../styling/PaddingWrapper';
 import { VideoDTO } from '../../models/VideoDTO';
 import { deleteVideo, getVideos } from '../../services/apis/videoService';
@@ -17,6 +17,7 @@ const Videos = () => {
   const [selectedVideo, setSelectedVideo] = useState<VideoDTO | null>(null);
   const { credentials } = useAdminAuth();
   const [showVideoForm, setShowVideoForm] = useState(false);
+  const [editMode, setEditMode] = useState(false);
   const [videoForm, setVideoForm] = useState(videoInitialState);
   const [videoErrors, setVideoErrors] = useState<VideoValidationErrors>({});
   // Video data is now mocked for static hosting. Replace with backend call if backend is restored.
@@ -66,9 +67,14 @@ const Videos = () => {
             {credentials && (
               <button
                 className="bg-yellow-400 hover:bg-yellow-500 text-black font-fell font-bold px-6 py-2 rounded shadow"
-                onClick={() => setShowVideoForm(true)}
+                onClick={() => {
+                  setEditMode(false);
+                  setVideoForm(videoInitialState);
+                  setVideoErrors({});
+                  setShowVideoForm(true);
+                }}
               >
-                + Add New Video
+                Add New Video
               </button>
             )}
           </div>
@@ -127,32 +133,50 @@ const Videos = () => {
                           <PlayIcon className="w-6 h-6 text-black" />
                         </div>
                       </div>
-                      {/* Delete Button (admin only) */}
+                      {/* Admin Buttons */}
                       {credentials && (
-                        <button
-                          className="absolute top-2 left-2 z-10"
-                          title="Delete Video"
-                          onClick={async e => {
-                            e.stopPropagation();
-                            if (deleteProtectionEnabled) {
-                              setVideoToDelete(video);
-                            } else {
-                              setDeleting(true);
-                              try {
-                                await deleteVideo(video.id, credentials?.token);
-                                setVideos(videos => videos.filter(v => v.id !== video.id));
-                                setDeleteError(null);
-                              } catch (err: any) {
-                                setDeleteError('Failed to delete video: ' + (err.message || 'Unknown error'));
-                              } finally {
-                                setDeleting(false);
+                        <>
+                          {/* Edit Button */}
+                          <button
+                            className="absolute top-2 right-2 z-10 bg-yellow-400 hover:bg-yellow-500 rounded-full p-2 transition-colors"
+                            title="Edit Video"
+                            onClick={e => {
+                              e.stopPropagation();
+                              setEditMode(true);
+                              setVideoForm(video);
+                              setVideoErrors({});
+                              setShowVideoForm(true);
+                            }}
+                            tabIndex={-1}
+                          >
+                            <PencilIcon className="h-4 w-4 text-black" />
+                          </button>
+                          {/* Delete Button */}
+                          <button
+                            className="absolute top-2 left-2 z-10"
+                            title="Delete Video"
+                            onClick={async e => {
+                              e.stopPropagation();
+                              if (deleteProtectionEnabled) {
+                                setVideoToDelete(video);
+                              } else {
+                                setDeleting(true);
+                                try {
+                                  await deleteVideo(video.id, credentials?.token);
+                                  setVideos(videos => videos.filter(v => v.id !== video.id));
+                                  setDeleteError(null);
+                                } catch (err: any) {
+                                  setDeleteError('Failed to delete video: ' + (err.message || 'Unknown error'));
+                                } finally {
+                                  setDeleting(false);
+                                }
                               }
-                            }
-                          }}
-                          tabIndex={-1}
-                        >
-                          <TrashIcon className="h-5 w-5 text-yellow-400 mt-1" />
-                        </button>
+                            }}
+                            tabIndex={-1}
+                          >
+                            <TrashIcon className="h-5 w-5 text-yellow-400 mt-1" />
+                          </button>
+                        </>
                       )}
     {/* Delete Confirmation Modal */}
     {deleteProtectionEnabled && videoToDelete && (
@@ -246,20 +270,23 @@ const Videos = () => {
           {/* Video Form Modal */}
           {showVideoForm && (
             <VideoForm
+              editMode={editMode}
               onClose={async () => {
                 setShowVideoForm(false);
-                // Video re-fetch after create is disabled for static hosting. Backend call commented out.
-                // try {
-                //   const backendVideos = await getVideos();
-                //   setVideos(Array.isArray(backendVideos) ? backendVideos : []);
-                // } catch {
-                //   setVideos([]);
-                // }
+                setEditMode(false);
+                // Refresh videos after successful add/update
+                try {
+                  const backendVideos = await getVideos();
+                  setVideos(Array.isArray(backendVideos) ? backendVideos : []);
+                } catch (err) {
+                  console.error('Failed to refresh videos:', err);
+                }
               }}
               onCancel={() => {
                 setVideoForm(videoInitialState);
                 setVideoErrors({});
                 setShowVideoForm(false);
+                setEditMode(false);
               }}
               form={videoForm}
               setForm={setVideoForm}

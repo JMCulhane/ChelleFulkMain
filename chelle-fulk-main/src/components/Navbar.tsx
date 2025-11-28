@@ -1,6 +1,8 @@
 import { JSX, useEffect, useState } from "react";
 import { Disclosure, Menu, MenuItem, MenuItems } from "@headlessui/react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useAdminAuth } from "../context/AdminAuthContext";
+import { logoutAdmin } from "../services/apis/adminService";
 
 type NavItem = {
   name: string;
@@ -24,6 +26,25 @@ const Navbar: React.FC = (): JSX.Element => {
   const location = useLocation();
   const navigate = useNavigate();
   const [navigation, setNavigation] = useState<NavItem[]>(initialNavigation);
+  const { credentials, setCredentials } = useAdminAuth();
+  const [loggingOut, setLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    if (!credentials?.token) return;
+    setLoggingOut(true);
+    try {
+      await logoutAdmin(credentials.token);
+      setCredentials(null);
+      // Flush all localStorage and sessionStorage for a hard logout
+      localStorage.clear();
+      sessionStorage.clear();
+      console.log('[Navbar] localStorage and sessionStorage flushed on logout.');
+    } catch (err: any) {
+      console.error('Logout failed:', err);
+    } finally {
+      setLoggingOut(false);
+    }
+  };
 
   useEffect(() => {
     setNavigation((prev) =>
@@ -71,7 +92,22 @@ const Navbar: React.FC = (): JSX.Element => {
             </div>
           </div>
 
-          <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+          {/* Logout Button - Absolute on large screens, relative on small */}
+          {credentials?.token && (
+            <div className="lg:absolute relative inset-y-0 lg:right-0 flex items-center lg:pr-4 pr-2">
+              <button
+                onClick={handleLogout}
+                disabled={loggingOut}
+                className="text-yellow-400 hover:text-yellow-300 font-fell rounded-md px-3 py-2 text-xl font-medium border border-yellow-400 hover:bg-yellow-400/10 transition-colors disabled:opacity-50"
+              >
+                {loggingOut ? 'Logging out...' : 'Logout'}
+              </button>
+            </div>
+          )}
+
+          <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 gap-4">
+            {/* Menu placeholder */}
+            
             <Menu as="div" className="relative">
               <MenuItems
                 transition

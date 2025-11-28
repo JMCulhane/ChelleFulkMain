@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - setup-db-connection
   workflow_dispatch:
 
 jobs:
@@ -29,6 +30,13 @@ jobs:
         run: npm run build
         working-directory: ./chelle-fulk-main
 
+      - name: Create API directory and copy PHP files
+        run: |
+          mkdir -p chelle-fulk-main/build/api
+          cp chelle-fulk-main/api/*.php chelle-fulk-main/build/api/
+          echo "DB_HOST=${{ secrets.DB_HOST }}" > chelle-fulk-main/build/api/.env
+          echo "DB_USER=${{ secrets.DB_USER }}" >> chelle-fulk-main/build/api/.env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> chelle-fulk-main/build/api/.env
 
       - name: Deploy to superb.net via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
