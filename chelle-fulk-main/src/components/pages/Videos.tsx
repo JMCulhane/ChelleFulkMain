@@ -222,6 +222,15 @@ const Videos = () => {
                         {video.title}
                       </h3>
                     </div>
+                    <div className="pt-3">
+                      <p className="flex items-center font-fell gap-x-2 text-base mt-1" style={{ lineHeight: 1 }}>
+                        <MusicalNoteIcon
+                          className="h-5 w-5 text-yellow-400 flex-shrink-0"
+                          aria-hidden="true"
+                        />
+                        {video?.accompanyment}
+                      </p>
+                    </div>
                   </div>
                 ))}
               </div>
