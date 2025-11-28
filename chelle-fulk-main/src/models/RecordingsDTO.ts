@@ -4,6 +4,7 @@ export interface SampleDTO {
 }
 
 export interface RecordingDTO {
+  id: number;
   image: string;
   title: string;
   yearPublished?: number;

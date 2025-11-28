@@ -105,7 +105,7 @@ function handleLogin($conn, $input) {
     // Check if account is locked
     if ($user['locked']) {
         http_response_code(403);
-        echo json_encode(['success' => false, 'error' => 'Account is locked']);
+        echo json_encode(['success' => false, 'error' > 'Account is locked']);
         $conn->close();
         exit();
     }

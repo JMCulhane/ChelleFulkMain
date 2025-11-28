@@ -1,13 +1,38 @@
 import API_BASE from "../../constants/apiBase";
-
-// Get all recordings
-// Mocked recordings data for three albums
 import { RecordingDTO } from "../../models/RecordingsDTO";
 
+// Create a new recording
+export const submitRecording = async (recordingData: FormData, token?: string) => {
+  const headers: Record<string, string> = {};
+  if (token) {
+    headers["X-Auth-Token"] = `Bearer ${token}`; // FastCGI workaround
+  }
+  const response = await fetch(`${API_BASE}/recordings.php`, {
+    method: "POST",
+    headers,
+    body: recordingData
+  });
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.error || "Failed to submit recording");
+  }
+  return response.json();
+};
+
+// Get all recordings
 export const getRecordings = async (): Promise<RecordingDTO[]> => {
-  // Mock data for three albums
+  try {
+    const response = await fetch(`${API_BASE}/recordings.php`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch recordings");
+    }
+    return response.json();
+  } catch (error) {
+    console.warn("API call failed, falling back to mock data:", error);
+    // Old mock data for three albums (fallback when backend unavailable)
   return [
     {
+      id: 1,
       image: "/assets/recordings/images/2DoBeatles.png",
       title: "2 Do Beatles",
   // yearPublished removed
@@ -47,6 +72,7 @@ export const getRecordings = async (): Promise<RecordingDTO[]> => {
       ]
     },
     {
+      id: 2,
       image: "/assets/recordings/images/Keltish.png",
       title: "Keltish",
   // yearPublished removed
@@ -74,6 +100,7 @@ export const getRecordings = async (): Promise<RecordingDTO[]> => {
       ]
     },
     {
+      id: 3,
       image: "/assets/recordings/images/IslandTime.png",
       title: "Island Time",
   // yearPublished removed
@@ -100,28 +127,25 @@ export const getRecordings = async (): Promise<RecordingDTO[]> => {
         ]
     }
   ];
-};
-
-// Get a single recording by ID
-export const getRecordingById = async (id: number | string) => {
-  const response = await fetch(`${API_BASE}/recordings/${id}`);
-  if (!response.ok) {
-    throw new Error("Failed to fetch recording");
   }
-  return response.json();
 };
 
 // Update a recording
-export const updateRecording = async (id: number | string, recordingData: any, token?: string) => {
-  const headers: Record<string, string> = { "Content-Type": "application/json" };
-  if (token) headers["Authorization"] = `Bearer ${token}`;
-  const response = await fetch(`${API_BASE}/recordings/${id}`, {
-    method: "PUT",
+export const updateRecording = async (id: number | string, recordingData: FormData, token?: string) => {
+  const headers: Record<string, string> = {};
+  if (token) {
+    headers["X-Auth-Token"] = `Bearer ${token}`;
+  }
+  // Add _method override for PHP
+  recordingData.append("_method", "PUT");
+  const response = await fetch(`${API_BASE}/recordings.php?id=${id}`, {
+    method: "POST",
     headers,
-    body: JSON.stringify(recordingData)
+    body: recordingData
   });
   if (!response.ok) {
-    throw new Error("Failed to update recording");
+    const errorData = await response.json();
+    throw new Error(errorData.error || "Failed to update recording");
   }
   return response.json();
 };
@@ -129,51 +153,25 @@ export const updateRecording = async (id: number | string, recordingData: any, t
 // Delete a recording
 export const deleteRecording = async (id: number | string, token?: string) => {
   const headers: Record<string, string> = {};
-  if (token) headers["Authorization"] = `Bearer ${token}`;
-  const response = await fetch(`${API_BASE}/recordings/${id}`, {
+  if (token) {
+    headers["X-Auth-Token"] = `Bearer ${token}`; // FastCGI workaround
+  }
+  const response = await fetch(`${API_BASE}/recordings.php?id=${id}`, {
     method: "DELETE",
     headers
   });
   if (!response.ok) {
-    throw new Error("Failed to delete recording");
+    const errorText = await response.text();
+    throw new Error("Failed to delete recording: " + errorText);
   }
-  return response.json();
-};
-
-export const submitRecording = async (recordingData: any, isMultipart = false, token?: string) => {
-  let options: RequestInit;
-  if (isMultipart) {
-    const headers: Record<string, string> = {};
-    if (token) headers["Authorization"] = `Bearer ${token}`;
-    options = {
-      method: "POST",
-      body: recordingData, // FormData
-      headers
-    };
-  } else {
-    const headers: Record<string, string> = { "Content-Type": "application/json" };
-    if (token) headers["Authorization"] = `Bearer ${token}`;
-    options = {
-      method: "POST",
-      headers,
-      body: JSON.stringify(recordingData)
-    };
+  if (response.status === 204) {
+    return;
   }
+  const text = await response.text();
+  if (!text) return;
   try {
-    const response = await fetch(`${API_BASE}/recordings`, options);
-    if (!response.ok) {
-      let errorMsg = `HTTP ${response.status}`;
-      try {
-        const text = await response.text();
-        errorMsg += text ? `: ${text}` : '';
-      } catch {}
-      throw new Error(errorMsg);
-    }
-    return response.json();
-  } catch (err: any) {
-    if (err.name === 'TypeError' && err.message && err.message.includes('fetch')) {
-      throw new Error('Network error: Could not connect to server.');
-    }
-    throw err;
+    return JSON.parse(text);
+  } catch {
+    return;
   }
 };

@@ -1,4 +1,3 @@
-
 import React, { useState, FormEvent } from "react";
 import PaddingWrapper from "../styling/PaddingWrapper";
 import Spinner from "../errors/Spinner";
@@ -6,7 +5,7 @@ import { loginAdmin } from '../../services/apis/adminService';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 
 const AdminCredentialForm: React.FC = () => {
-  const { setCredentials } = useAdminAuth();
+  const { credentials, setCredentials } = useAdminAuth();
   const [form, setForm] = useState({
     username: "",
     password: ""
@@ -29,8 +28,16 @@ const AdminCredentialForm: React.FC = () => {
     setStatus(null);
     setLoading(true);
     try {
-      const credentials = await loginAdmin(form.username, form.password);
-      setCredentials(credentials);
+      const response = await loginAdmin(form.username, form.password);
+      // Flatten the response and add 1-minute expiration for testing
+      const expiresAt = Date.now() + (6000 * 1000); // 60 seconds from now
+      setCredentials({
+        token: response.token,
+        username: response.user?.username,
+        role: response.user?.role,
+        expiresAt: expiresAt
+      });
+      console.log("Login successful. Token expires at:", new Date(expiresAt).toLocaleTimeString());
       setStatus({ success: true, message: "Login successful!" });
     } catch (err: any) {
       setStatus({ success: false, message: err.message || "Unknown error" });
@@ -46,10 +53,21 @@ const AdminCredentialForm: React.FC = () => {
           <h1 className="text-4xl font-fell mb-6 border-b border-yellow-600 pb-2 tracking-wider">
             Admin Login
           </h1>
-          <form
-            onSubmit={handleSubmit}
-            className="space-y-8 bg-gray-900 p-8 rounded-lg border border-yellow-700 shadow-inner"
-          >
+          
+          {/* Show logged-in status if authenticated */}
+          {credentials?.token ? (
+            <div className="mb-6 p-4 bg-gray-900 rounded-lg border border-green-600">
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="text-yellow-400 font-fell">Already logged in as: <span className="text-green-400 font-fell">{credentials.role}</span></p>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-8 bg-gray-900 p-8 rounded-lg border border-yellow-700 shadow-inner"
+            >
             <div>
               <label
                 htmlFor="username"
@@ -65,7 +83,6 @@ const AdminCredentialForm: React.FC = () => {
                 onChange={handleInputChange}
                 required
                 className="w-full border border-yellow-700 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600 bg-black text-yellow-300 placeholder-yellow-600"
-                placeholder="Admin username"
               />
             </div>
             <div>
@@ -83,7 +100,6 @@ const AdminCredentialForm: React.FC = () => {
                 onChange={handleInputChange}
                 required
                 className="w-full border border-yellow-700 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600 bg-black text-yellow-300 placeholder-yellow-600"
-                placeholder="Admin password"
               />
             </div>
             <div className="flex items-center gap-4">
@@ -103,6 +119,7 @@ const AdminCredentialForm: React.FC = () => {
               </div>
             )}
           </form>
+          )}
         </div>
       </PaddingWrapper>
   );
