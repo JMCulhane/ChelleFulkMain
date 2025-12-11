@@ -14,9 +14,13 @@ type Props = {
   playingId: string | null;
   setPlayingId: (id: string | null) => void;
   audioRefs: React.MutableRefObject<{ [id: string]: HTMLAudioElement | null }>;
+  isAdmin?: boolean;
+  adminToken?: string;
+  deleteProtectionEnabled?: boolean;
+  onSampleDeleted?: (recordingId: number, sampleId: number) => void;
 };
 
-const RightHuggingContainer: React.FC<Props> = ({ image, knot, recording, deleteButton, playingId, setPlayingId, audioRefs }) => {
+const RightHuggingContainer: React.FC<Props> = ({ image, knot, recording, deleteButton, playingId, setPlayingId, audioRefs, isAdmin, adminToken, deleteProtectionEnabled, onSampleDeleted }) => {
   // Global audio control is now managed by parent
 
   return (
@@ -31,9 +35,14 @@ const RightHuggingContainer: React.FC<Props> = ({ image, knot, recording, delete
                 <AudioSamples
                   samples={recording.samples}
                   albumId={recording.title}
+                  recordingId={recording.id}
                   playingId={playingId}
                   setPlayingId={setPlayingId}
                   audioRefs={audioRefs}
+                  isAdmin={isAdmin}
+                  adminToken={adminToken}
+                  deleteProtectionEnabled={deleteProtectionEnabled}
+                  onSampleDeleted={(sampleId) => onSampleDeleted?.(recording.id, sampleId)}
                 />
               </div>
             )}

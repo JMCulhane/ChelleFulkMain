@@ -1,4 +1,5 @@
 export interface SampleDTO {
+  id: number;
   trackName: string;
   audioUrl: string;
 }

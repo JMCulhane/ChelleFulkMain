@@ -112,20 +112,16 @@ export const updateVideo = async (id: number | string, videoData: any, token?: s
 // Delete a video
 export const deleteVideo = async (id: number | string, token?: string) => {
   const headers: Record<string, string> = {};
-  console.log("Delete - token:", token);
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
     headers["X-Auth-Token"] = `Bearer ${token}`; // FastCGI workaround
   }
-  console.log("Delete - headers:", headers);
   const response = await fetch(`${API_BASE}/videos.php?id=${id}`, {
     method: "DELETE",
     headers
   });
-  console.log("Delete - response status:", response.status);
   if (!response.ok) {
     const errorText = await response.text();
-    console.log("Delete - error response:", errorText);
     throw new Error("Failed to delete video: " + errorText);
   }
   // If the response is 204 No Content, do not try to parse JSON

@@ -14,9 +14,13 @@ interface Props {
   playingId: string | null;
   setPlayingId: (id: string | null) => void;
   audioRefs: React.MutableRefObject<{ [id: string]: HTMLAudioElement | null }>;
+  isAdmin?: boolean;
+  adminToken?: string;
+  deleteProtectionEnabled?: boolean;
+  onSampleDeleted?: (recordingId: number, sampleId: number) => void;
 }
 
-const LeftHuggingContainer: React.FC<Props> = ({ image, knot, recording, alignRightOffset, deleteButton, playingId, setPlayingId, audioRefs }) => {
+const LeftHuggingContainer: React.FC<Props> = ({ image, knot, recording, alignRightOffset, deleteButton, playingId, setPlayingId, audioRefs, isAdmin, adminToken, deleteProtectionEnabled, onSampleDeleted }) => {
   // Style adjustment to push samples rightwards aligning under right knot
   const samplesStyle = alignRightOffset
     ? { paddingRight: `${alignRightOffset}px` }
@@ -46,9 +50,14 @@ const LeftHuggingContainer: React.FC<Props> = ({ image, knot, recording, alignRi
                 <AudioSamples
                   samples={recording.samples}
                   albumId={recording.title}
+                  recordingId={recording.id}
                   playingId={playingId}
                   setPlayingId={setPlayingId}
                   audioRefs={audioRefs}
+                  isAdmin={isAdmin}
+                  adminToken={adminToken}
+                  deleteProtectionEnabled={deleteProtectionEnabled}
+                  onSampleDeleted={(sampleId) => onSampleDeleted?.(recording.id, sampleId)}
                 />
               </div>
             )}

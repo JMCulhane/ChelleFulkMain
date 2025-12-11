@@ -142,7 +142,7 @@ $id = isset($_GET['id']) ? intval($_GET['id']) : null;
 switch ($method) {
     case 'GET':
         // Get all videos (public access)
-        $result = $conn->query("SELECT id, title, thumbnail, embed_id FROM chellefulk_main_video ORDER BY id ASC");
+        $result = $conn->query("SELECT id, title, thumbnail, embed_id FROM chellefulk_main_video ORDER BY created_at DESC");
         $videos = [];
         while ($row = $result->fetch_assoc()) {
             $videos[] = [

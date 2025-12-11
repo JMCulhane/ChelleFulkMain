@@ -58,7 +58,6 @@ const VideoForm: React.FC<VideoFormProps> = ({ onClose, onCancel, form, setForm,
     }
     setLoading(true);
     try {
-      console.log(editMode ? 'Updating' : 'Submitting', 'with token:', credentials?.token);
       if (editMode) {
         await updateVideo(form.id, form, credentials?.token);
         setStatus({ success: true, message: "Your video has been successfully updated." });

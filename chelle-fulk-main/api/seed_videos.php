@@ -24,7 +24,8 @@ $createTableSQL = "CREATE TABLE IF NOT EXISTS chellefulk_main_video (
     title VARCHAR(255) NOT NULL,
     thumbnail VARCHAR(500) NOT NULL,
     embed_id VARCHAR(50) NOT NULL UNIQUE,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )";
 
 if (!$conn->query($createTableSQL)) {

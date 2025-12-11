@@ -17,7 +17,6 @@ const DbConnectionTest: React.FC = () => {
 
     try {
       const response = await testDatabaseConnection();
-      console.log('Details are:', response);
       setResult({
         success: response.success,
         message: response.message,

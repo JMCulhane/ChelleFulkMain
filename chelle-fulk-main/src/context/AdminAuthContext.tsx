@@ -23,20 +23,16 @@ export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (!stored) {
-        console.log('[AdminAuth] No credentials in localStorage. Not logged in.');
         return null;
       }
       const parsed = JSON.parse(stored);
       // Check if token is expired
       if (parsed.expiresAt && Date.now() > parsed.expiresAt) {
         localStorage.removeItem(STORAGE_KEY);
-        console.log('[AdminAuth] Token was expired on load, cleared from storage');
         return null;
       }
-      console.log('[AdminAuth] Loaded credentials from localStorage:', parsed);
       return parsed;
     } catch (e) {
-      console.log('[AdminAuth] Failed to parse credentials from localStorage:', e);
       return null;
     }
   });
@@ -45,12 +41,9 @@ export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
     setCredentialsState(creds);
     if (creds) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(creds));
-      console.log('[AdminAuth] Credentials set. Now logged in:', creds);
     } else {
       localStorage.removeItem(STORAGE_KEY);
-      console.log('[AdminAuth] Credentials cleared. Now logged out.');
     }
-    console.log('[AdminAuth] localStorage after setCredentials:', localStorage.getItem(STORAGE_KEY));
   };
 
   // Check token expiration periodically
@@ -59,7 +52,6 @@ export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
 
     const checkExpiration = () => {
       if (credentials.expiresAt && Date.now() > credentials.expiresAt) {
-        console.log('[AdminAuth] Token expired, auto-logging out...');
         setCredentials(null);
       }
     };
@@ -68,12 +60,6 @@ export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
     const interval = setInterval(checkExpiration, 1000);
 
     return () => clearInterval(interval);
-  }, [credentials]);
-
-  // Log credentials on every change
-  useEffect(() => {
-    console.log('[AdminAuth] Credentials changed:', credentials);
-    console.log('[AdminAuth] localStorage:', localStorage.getItem(STORAGE_KEY));
   }, [credentials]);
 
   return (

@@ -127,9 +127,13 @@ const RecordingForm: React.FC<RecordingFormProps> = ({ onClose, onCancel, form, 
   // Validation function
   const validate = (data: RecordingDTO): ValidationErrors => {
     const errs: ValidationErrors = {};
-    // Image file required
-    if (!imageFile) {
-      errs.image = "Image file is required.";
+    
+    // Skip file validation in edit mode
+    if (!editMode) {
+      // Image file required (only for new recordings)
+      if (!imageFile) {
+        errs.image = "Image file is required.";
+      }
     }
 
     // Title required
@@ -155,15 +159,18 @@ const RecordingForm: React.FC<RecordingFormProps> = ({ onClose, onCancel, form, 
       errs.performers = performerErrors;
     }
 
-    // Validate samples: trackName and audio file required
-    const sampleErrors = data.samples.map((sample, i) => {
-      const sErr: { trackName?: string; audioUrl?: string } = {};
-      if (!sample.trackName.trim()) sErr.trackName = "Track name is required.";
-      if (!audioFiles[i]) sErr.audioUrl = "Audio file is required.";
-      return sErr;
-    });
-    if (sampleErrors.some((e) => Object.keys(e).length > 0)) {
-      errs.samples = sampleErrors;
+    // Validate samples: trackName required, audio file only required for new recordings
+    // Skip sample validation entirely in edit mode
+    if (!editMode) {
+      const sampleErrors = data.samples.map((sample, i) => {
+        const sErr: { trackName?: string; audioUrl?: string } = {};
+        if (!sample.trackName.trim()) sErr.trackName = "Track name is required.";
+        if (!audioFiles[i]) sErr.audioUrl = "Audio file is required.";
+        return sErr;
+      });
+      if (sampleErrors.some((e) => Object.keys(e).length > 0)) {
+        errs.samples = sampleErrors;
+      }
     }
 
     return errs;
@@ -199,7 +206,9 @@ const RecordingForm: React.FC<RecordingFormProps> = ({ onClose, onCancel, form, 
     formData.append("link", form.link);
     // Send performers and samples as JSON strings for backend compatibility
     formData.append("performers", JSON.stringify(form.performers));
-    formData.append("samples", JSON.stringify(form.samples));
+    // Filter out empty samples before sending
+    const validSamples = form.samples.filter(s => s.trackName.trim() !== '');
+    formData.append("samples", JSON.stringify(validSamples));
     // Image file
     if (imageFile) {
       formData.append("image", imageFile);
@@ -222,6 +231,7 @@ const RecordingForm: React.FC<RecordingFormProps> = ({ onClose, onCancel, form, 
       dispatch({ type: "RESET" });
       onClose();
     } catch (error: any) {
+      console.error('Form submission error:', error);
       setStatus({ success: false, message: error.message || (editMode ? "Failed to update recording." : "Failed to submit recording.") });
     } finally {
       setLoading(false);

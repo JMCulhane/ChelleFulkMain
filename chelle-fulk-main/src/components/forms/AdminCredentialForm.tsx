@@ -37,7 +37,6 @@ const AdminCredentialForm: React.FC = () => {
         role: response.user?.role,
         expiresAt: expiresAt
       });
-      console.log("Login successful. Token expires at:", new Date(expiresAt).toLocaleTimeString());
       setStatus({ success: true, message: "Login successful!" });
     } catch (err: any) {
       setStatus({ success: false, message: err.message || "Unknown error" });

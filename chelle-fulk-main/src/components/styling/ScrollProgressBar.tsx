@@ -73,7 +73,6 @@ const ScrollProgressBar: React.FC = () => {
         if (sectionRefs.current[0]) {
         const firstSectionTop = sectionRefs.current[0].offsetTop;
         if (window.scrollY >= firstSectionTop - 10) {
-            console.log("ScrollY is: ", window.scrollY)
           setShowVertical(true);
         } else {
           setShowVertical(false);

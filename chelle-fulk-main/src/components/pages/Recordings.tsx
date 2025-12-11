@@ -51,6 +51,21 @@ const Recordings: React.FC = () => {
   const [playingId, setPlayingId] = useState<string | null>(null);
   const audioRefs = useRef<{ [id: string]: HTMLAudioElement | null }>({});
 
+  // Handle sample deletion
+  const handleSampleDeleted = (recordingId: number, sampleId: number) => {
+    setRecordings(recordings => 
+      recordings.map(rec => {
+        if (rec.id === recordingId) {
+          return {
+            ...rec,
+            samples: rec.samples.filter(s => s.id !== sampleId)
+          };
+        }
+        return rec;
+      })
+    );
+  };
+
   return (
     <>
     <PaddingWrapper mdPadding="md:pt-12 md:p-8">
@@ -134,17 +149,7 @@ const Recordings: React.FC = () => {
                         dispatch({ type: 'SET_PERFORMER', index: idx, value: performer });
                       }
                     });
-                    // Set samples
-                    recording.samples.forEach((sample, idx) => {
-                      if (idx === 0) {
-                        dispatch({ type: 'SET_SAMPLE_FIELD', index: 0, field: 'trackName', value: sample.trackName });
-                        dispatch({ type: 'SET_SAMPLE_FIELD', index: 0, field: 'audioUrl', value: sample.audioUrl });
-                      } else {
-                        dispatch({ type: 'ADD_SAMPLE' });
-                        dispatch({ type: 'SET_SAMPLE_FIELD', index: idx, field: 'trackName', value: sample.trackName });
-                        dispatch({ type: 'SET_SAMPLE_FIELD', index: idx, field: 'audioUrl', value: sample.audioUrl });
-                      }
-                    });
+                    // Samples are not pre-populated in edit mode
                     setErrors({});
                     setIsModalOpen(true);
                   }}
@@ -191,6 +196,10 @@ const Recordings: React.FC = () => {
                     playingId={playingId}
                     setPlayingId={setPlayingId}
                     audioRefs={audioRefs}
+                    isAdmin={!!credentials}
+                    adminToken={credentials?.token}
+                    deleteProtectionEnabled={deleteProtectionEnabled}
+                    onSampleDeleted={handleSampleDeleted}
                   />
                 </div>
               );
@@ -205,6 +214,10 @@ const Recordings: React.FC = () => {
                     playingId={playingId}
                     setPlayingId={setPlayingId}
                     audioRefs={audioRefs}
+                    isAdmin={!!credentials}
+                    adminToken={credentials?.token}
+                    deleteProtectionEnabled={deleteProtectionEnabled}
+                    onSampleDeleted={handleSampleDeleted}
                   />
                 </div>
               );
